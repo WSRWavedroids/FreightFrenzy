@@ -62,7 +62,7 @@ public class BasicOpMode_IterativePt2 extends OpMode {
     public DcMotor backRightDrive;
     public DcMotor duckSpinner;
 
-    private double speed = 0.5;
+    private double speed = 0.75;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -184,18 +184,18 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         duckSpinner.setPower(power);
     }
 
-    public void setIndividualPowers(float[] motorPowers) {
+    public void setIndividualPowers(double[] motorPowers) {
         frontLeftDrive.setPower(motorPowers[0]);
         frontRightDrive.setPower(motorPowers[1]);
         backLeftDrive.setPower(motorPowers[2]);
         backRightDrive.setPower(motorPowers[3]);
     }
 
-    private float getLargestAbsVal(float[] values) {
-        float max = 0;
-        for (float val : values) {
+    private double getLargestAbsVal(double[] values) {
+        double max = 0;
+        for (double val : values) {
             if (Math.abs(val) > max) {
-                max = Math.abs(val);
+                max = (double) Math.abs(val);
             }
         }
         return max;
@@ -206,13 +206,13 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         float leftY = this.gamepad1.left_stick_y;
         float rightX = this.gamepad1.right_stick_x;
 
-        float[] motorPowers = new float[4];
+        double[] motorPowers = new double[4];
         motorPowers[0] = (leftY - leftX - rightX);
         motorPowers[1] = (leftY + leftX + rightX);
         motorPowers[2] = (leftY + leftX - rightX);
         motorPowers[3] = (leftY - leftX + rightX);
 
-        float max = getLargestAbsVal(motorPowers);
+        double max = getLargestAbsVal(motorPowers);
         if (max < 1) {
             max = 1;
         }
@@ -220,9 +220,9 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         for (int i = 0; i < motorPowers.length; i++) {
             motorPowers[i] *= (speed / max);
 
-            float abs = Math.abs(motorPowers[i]);
+            double abs = Math.abs(motorPowers[i]);
             if (abs < 0.05) {
-                motorPowers[i] = 0.0f;
+                motorPowers[i] = 0.0;
             }
             if (abs > 1.0) {
                 motorPowers[i] /= abs;
