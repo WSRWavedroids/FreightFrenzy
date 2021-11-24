@@ -51,13 +51,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@TeleOp(name="CoolerThanTheShellBots", group="Iterative Opmode")
 //@Disabled
-public class cool extends OpMode {
+public class CoolerThanTheShellBots extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     public Robot robot;
-    private double speed = 0.75;
+    public double speed = 0.75;
 
     /*
      * Code to run ONCE when the driver hits INIT

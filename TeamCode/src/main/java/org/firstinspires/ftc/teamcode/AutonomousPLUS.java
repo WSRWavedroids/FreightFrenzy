@@ -34,11 +34,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This is the autonomous mode. It moves the robot withou us having to touch the controller. Previous programmers erally sucked
+ * This is the autonomous mode. It moves the robot without us having to touch the controller.
+ * Previous programmers really sucked at explaining what any of this meant, so we're trying to do better.
+ *
  */
 
 @Autonomous(name="Auto", group="Pushbot")
-@Disabled
+//@Disabled
 public class AutonomousPLUS extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -48,7 +50,7 @@ public class AutonomousPLUS extends LinearOpMode {
     public DcMotor backRightDrive;
     public DcMotor duckSpinner;
 
-    private double speed = 0.75;
+    public double speed = 0.4;
 
     @Override
     public void runOpMode() {
@@ -62,15 +64,7 @@ public class AutonomousPLUS extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
-        // this.frontLeftDrive = frontLeftDrive;
-        // this.frontRightDrive = frontRightDrive;
-        // this.backLeftDrive = backLeftDrive;
-        // this.backRightDrive = backRightDrive;
 
-        //frontLeftDrive.setTargetPosition(0);
-        //frontRightDrive.setTargetPosition(0);
-        //backLeftDrive.setTargetPosition(0);
-        //backRightDrive.setTargetPosition(0);
 
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -78,16 +72,7 @@ public class AutonomousPLUS extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         duckSpinner.setDirection(DcMotor.Direction.FORWARD);
 
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        //  leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        // rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -95,11 +80,11 @@ public class AutonomousPLUS extends LinearOpMode {
         //Do this to pass inspection.
         waitForStart();
 
-        moveRobotForwardTicks(inchesToTicks(12.));
-
-        while (isWheelsBusy()){}
+        //moveRobotForwardTicks(inchesToTicks(5.));
+        //while (isWheelsBusy()){}
+        //sleep(200);
+        turnRobotTicks(inchesToTicks(15.));
         sleep(200);
-        turnRobotTicks(inchesToTicks(5.));
 
     }
     public boolean isWheelsBusy(){
@@ -117,6 +102,17 @@ public class AutonomousPLUS extends LinearOpMode {
         frontRightDrive.setTargetPosition(ticks + frontRightDrive.getCurrentPosition());
         backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
         backRightDrive.setTargetPosition(ticks + backRightDrive.getCurrentPosition());
+
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        frontLeftDrive.setPower(speed);
+        frontRightDrive.setPower(speed);
+        backLeftDrive.setPower(speed);
+        backRightDrive.setPower(speed);
+
     }
 
     public void turnRobotTicks(int ticks){
@@ -125,5 +121,15 @@ public class AutonomousPLUS extends LinearOpMode {
         frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() - ticks);
         frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + ticks);
         backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + ticks);
+
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        frontLeftDrive.setPower(speed);
+        frontRightDrive.setPower(speed);
+        backLeftDrive.setPower(speed);
+        backRightDrive.setPower(speed);
     }
 }
