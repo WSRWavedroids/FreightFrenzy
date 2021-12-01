@@ -71,7 +71,13 @@ public class CoolerThanTheShellBots extends OpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        robot = new Robot(hardwareMap.get(DcMotor.class, "duckSpinner"), hardwareMap.get(DcMotor.class, "frontLeftDrive"), hardwareMap.get(DcMotor.class, "frontRightDrive"), hardwareMap.get(DcMotor.class, "backLeftDrive"), hardwareMap.get(DcMotor.class, "backRightDrive"), telemetry);
+        robot = new Robot(
+                hardwareMap.get(DcMotor.class, "duckSpinner")
+                , hardwareMap.get(DcMotor.class, "frontLeftDrive")
+                , hardwareMap.get(DcMotor.class, "frontRightDrive")
+                , hardwareMap.get(DcMotor.class, "backLeftDrive")
+                , hardwareMap.get(DcMotor.class, "backRightDrive")
+                , telemetry);
         robot.setTeleMode();
 
 
@@ -102,7 +108,10 @@ public class CoolerThanTheShellBots extends OpMode {
 
         }
 
-        robot.drive(robot.getMagnitude(gamepad1.left_stick_x, gamepad1.left_stick_y), gamepad1.right_stick_x , robot.getMagnitude(gamepad1.left_stick_x, gamepad1.left_stick_x) * speed);
+        robot.drive(
+                robot.getMagnitude(gamepad1.left_stick_x, gamepad1.left_stick_y)
+                , gamepad1.right_stick_x
+                , robot.getMagnitude(gamepad1.left_stick_x, gamepad1.left_stick_x) * speed);
 
     }
 

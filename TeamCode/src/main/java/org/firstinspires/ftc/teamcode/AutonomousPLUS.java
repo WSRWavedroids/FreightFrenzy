@@ -80,9 +80,9 @@ public class AutonomousPLUS extends LinearOpMode {
         //Do this to pass inspection.
         waitForStart();
 
-        //moveRobotForwardTicks(inchesToTicks(5.));
-        //while (isWheelsBusy()){}
-        //sleep(200);
+        moveRobotForwardTicks(inchesToTicks(5.));
+        while (isWheelsBusy()){}
+        sleep(200);
         turnRobotTicks(inchesToTicks(15.));
         sleep(200);
 
@@ -93,7 +93,7 @@ public class AutonomousPLUS extends LinearOpMode {
 
     public int inchesToTicks(double inches){
         // returns the inches * ticks per rotation / wheel circ
-        return (int) ((inches/12.25) * 537.6 / .5);
+        return (int) ((inches/12.25) * 537.6 / .5); //inches you wanna go / circumference * ticks per rotation
 
     }
 

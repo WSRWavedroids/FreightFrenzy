@@ -32,7 +32,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -61,6 +63,8 @@ public class BasicOpMode_IterativePt2 extends OpMode {
     public DcMotor backLeftDrive;
     public DcMotor backRightDrive;
     public DcMotor duckSpinner;
+    public DcMotor clawArm;
+    public CRServo   claw;
 
     private double speed = 0.75;
 
@@ -81,6 +85,10 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
         duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
+        clawArm = hardwareMap.get(DcMotor.class, "clawArm");
+        claw = hardwareMap.get(CRServo.class, "claw");
+
+
        // this.frontLeftDrive = frontLeftDrive;
        // this.frontRightDrive = frontRightDrive;
        // this.backLeftDrive = backLeftDrive;
@@ -146,6 +154,22 @@ public class BasicOpMode_IterativePt2 extends OpMode {
             turnOnSpinner(0);
         }
 
+        if (this.gamepad2.a) {
+            claw.getController().setServoPosition(claw.getPortNumber(),1);
+        } else if (this.gamepad2.b){
+            claw.getController().setServoPosition(claw.getPortNumber(), 0);
+        }
+
+        if (this.gamepad2.left_stick_y > 0.5) {
+            clawArm.setDirection(DcMotor.Direction.FORWARD);
+            clawArm.setPower(0.75);
+        } else if (this.gamepad2.left_stick_y < -0.5){
+            clawArm.setDirection(DcMotor.Direction.REVERSE);
+            clawArm.setPower(0.75);
+        } else {
+            clawArm.setPower(0);
+        }
+
         // Setup a variable for each drive wheel to save power level for telemetry
         //double leftPower;
         //double rightPower;
@@ -172,6 +196,9 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         // Show the elapsed game time and wheel power.
         //telemetry.addData("Status", "Run Time: " + runtime.toString());
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+    }
+
+    private void setServoPosition(CRServo claw, double v) {
     }
 
     /*
