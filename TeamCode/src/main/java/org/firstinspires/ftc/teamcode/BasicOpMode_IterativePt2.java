@@ -64,7 +64,7 @@ public class BasicOpMode_IterativePt2 extends OpMode {
     public DcMotor backRightDrive;
     public DcMotor duckSpinner;
     public DcMotor clawArm;
-    public CRServo   claw;
+    public CRServo claw;
 
     private double speed = 0.75;
 
@@ -80,7 +80,7 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        frontRightDrive  = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
@@ -89,10 +89,10 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         claw = hardwareMap.get(CRServo.class, "claw");
 
 
-       // this.frontLeftDrive = frontLeftDrive;
-       // this.frontRightDrive = frontRightDrive;
-       // this.backLeftDrive = backLeftDrive;
-       // this.backRightDrive = backRightDrive;
+        // this.frontLeftDrive = frontLeftDrive;
+        // this.frontRightDrive = frontRightDrive;
+        // this.backLeftDrive = backLeftDrive;
+        // this.backRightDrive = backRightDrive;
 
         //frontLeftDrive.setTargetPosition(0);
         //frontRightDrive.setTargetPosition(0);
@@ -138,37 +138,71 @@ public class BasicOpMode_IterativePt2 extends OpMode {
 
         singleJoystickDrive();
 
-        if (this.gamepad1.right_trigger > 0.5){
+        if (this.gamepad1.right_trigger > 0.5) {
             speed = 1.0;
         } else if (this.gamepad1.left_trigger > 0.5) {
             speed = 0.5;
-        } else if (this.gamepad1.right_bumper){
+        } else if (this.gamepad1.right_bumper) {
             speed = 0.25;
         }
 
         if (this.gamepad1.y) {
-            turnOnSpinner(0.5);
+            turnOnSpinner(0.65);
         } else if (this.gamepad1.a) {
-            turnOnSpinner(-0.5);
+            turnOnSpinner(-0.65);
         } else {
             turnOnSpinner(0);
         }
 
+
+        telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
         if (this.gamepad2.a) {
-            claw.getController().setServoPosition(claw.getPortNumber(),1);
-        } else if (this.gamepad2.b){
             claw.getController().setServoPosition(claw.getPortNumber(), 0);
+        } else if (this.gamepad2.b) {
+            claw.getController().setServoPosition(claw.getPortNumber(), 0.25);
         }
 
         if (this.gamepad2.left_stick_y > 0.5) {
             clawArm.setDirection(DcMotor.Direction.FORWARD);
-            clawArm.setPower(0.75);
-        } else if (this.gamepad2.left_stick_y < -0.5){
+            clawArm.setPower(0.3);
+        } else if (this.gamepad2.left_stick_y < -0.5) {
             clawArm.setDirection(DcMotor.Direction.REVERSE);
-            clawArm.setPower(0.75);
+            clawArm.setPower(1);
         } else {
-            clawArm.setPower(0);
+            clawArm.setDirection(DcMotor.Direction.REVERSE);
+            clawArm.setPower(0.1);
+            //setClawArmPower(true);
         }
+
+/*
+            // 1 below
+            //tennisArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // Don't remember if next line is needed.  I believe setTargetPosition is inited to zero so probably not needed
+            //clawArm.setTargetPosition(0);
+            // 2 below
+            clawArm.setPower(0.65); //set to the max speed you want the arm to move at
+        }
+
+        public void setClawArmPower(boolean up)
+        {
+            if(up)
+            {
+                clawArm.setTargetPosition(clawArm.getCurrentPosition()+200);
+                clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                // 3 below
+                //tennisArm.setPower(0.7);
+            } else {
+                clawArm.setTargetPosition(clawArm.getCurrentPosition()-200);
+                clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                // 4 below
+                //tennisArm.setPower(-0.7);
+            }
+        }
+    /*
+    }*/
+
 
         // Setup a variable for each drive wheel to save power level for telemetry
         //double leftPower;
@@ -196,70 +230,77 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         // Show the elapsed game time and wheel power.
         //telemetry.addData("Status", "Run Time: " + runtime.toString());
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+
     }
-
-    private void setServoPosition(CRServo claw, double v) {
-    }
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
-    }
-    public void turnOnSpinner(double power) {
-        duckSpinner.setPower(power);
-    }
-
-    public void setIndividualPowers(double[] motorPowers) {
-        frontLeftDrive.setPower(motorPowers[0]);
-        frontRightDrive.setPower(motorPowers[1]);
-        backLeftDrive.setPower(motorPowers[2]);
-        backRightDrive.setPower(motorPowers[3]);
-    }
-
-    private double getLargestAbsVal(double[] values) {
-        double max = 0;
-        for (double val : values) {
-            if (Math.abs(val) > max) {
-                max = (double) Math.abs(val);
-            }
-        }
-        return max;
-    }
-
-    private void singleJoystickDrive() {
-        float leftX = this.gamepad1.left_stick_x;
-        float leftY = this.gamepad1.left_stick_y;
-        float rightX = this.gamepad1.right_stick_x;
-
-        double[] motorPowers = new double[4];
-        motorPowers[0] = (leftY - leftX - rightX);
-        motorPowers[1] = (leftY + leftX + rightX);
-        motorPowers[2] = (leftY + leftX - rightX);
-        motorPowers[3] = (leftY - leftX + rightX);
-
-        double max = getLargestAbsVal(motorPowers);
-        if (max < 1) {
-            max = 1;
+        private void setServoPosition (CRServo claw,double v){
         }
 
-        for (int i = 0; i < motorPowers.length; i++) {
-            motorPowers[i] *= (speed / max);
+        /*
+         * Code to run ONCE after the driver hits STOP
+         */
+        @Override
+        public void stop () {
 
-            double abs = Math.abs(motorPowers[i]);
-            if (abs < 0.05) {
-                motorPowers[i] = 0.0;
-            }
-            if (abs > 1.0) {
-                motorPowers[i] /= abs;
-            }
-            //logger.numberLog("Motor" + i, motorPowers[i]);
         }
 
-        setIndividualPowers(motorPowers);
-    }
+        public void turnOnSpinner ( double power){
+            duckSpinner.setPower(power);
+        }
+
+        public void setIndividualPowers ( float[] motorPowers){
+            if (motorPowers.length != 4) {
+                return;
+            }
+            frontLeftDrive.setPower(motorPowers[0]);
+            frontRightDrive.setPower(motorPowers[1]);
+            backLeftDrive.setPower(motorPowers[2]);
+            backRightDrive.setPower(motorPowers[3]);
+        }
+
+        private void singleJoystickDrive () {
+            float leftX = this.gamepad1.left_stick_x;
+            float leftY = this.gamepad1.left_stick_y;
+            float rightX = this.gamepad1.right_stick_x;
+
+            float[] motorPowers = new float[4];
+            motorPowers[0] = (leftY - leftX - rightX);
+            motorPowers[1] = (leftY + leftX + rightX);
+            motorPowers[2] = (leftY + leftX - rightX);
+            motorPowers[3] = (leftY - leftX + rightX);
+
+            float max = getLargestAbsVal(motorPowers);
+            if (max < 1) {
+                max = 1;
+            }
+
+            for (int i = 0; i < motorPowers.length; i++) {
+                motorPowers[i] *= (speed / max);
+
+                float abs = Math.abs(motorPowers[i]);
+                if (abs < 0.05) {
+                    motorPowers[i] = 0.0f;
+                }
+                if (abs > 1.0) {
+                    motorPowers[i] /= abs;
+                }
+            }
+
+            setIndividualPowers(motorPowers);
+        }
+
+        private float getLargestAbsVal ( float[] values){
+            float max = 0;
+            for (float val : values) {
+                if (Math.abs(val) > max) {
+                    max = Math.abs(val);
+                }
+            }
+            return max;
+        }
+
 }
+
+
 
 
 
