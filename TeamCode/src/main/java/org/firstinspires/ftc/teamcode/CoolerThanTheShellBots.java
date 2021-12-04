@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 @TeleOp(name="CoolerThanTheShellBots", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class CoolerThanTheShellBots extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

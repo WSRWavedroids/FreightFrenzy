@@ -29,15 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -53,9 +49,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@TeleOp(name="Lean Mean TeleOp Machine", group="Iterative Opmode")
 //@Disabled
-public class BasicOpMode_IterativePt2 extends OpMode {
+public class Lean_Mean_Teleop_Machine extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     public DcMotor frontLeftDrive;
@@ -106,6 +102,8 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         duckSpinner.setDirection(DcMotor.Direction.FORWARD);
 
 
+
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         //  leftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -120,6 +118,7 @@ public class BasicOpMode_IterativePt2 extends OpMode {
      */
     @Override
     public void init_loop() {
+        telemetry.addData("HYPE", "ARE! YOU! READY?!?!?!?!");
     }
 
     /*
@@ -128,6 +127,7 @@ public class BasicOpMode_IterativePt2 extends OpMode {
     @Override
     public void start() {
         runtime.reset();
+        telemetry.addData("HYPE", "Let's do this!!!");
     }
 
     /*
@@ -138,105 +138,82 @@ public class BasicOpMode_IterativePt2 extends OpMode {
 
         singleJoystickDrive();
 
+        // This little section updates the driver hub on the runtime and the motor powers.
+        // It's mostly used for troubleshooting.
+
+        double frontLeftPower = frontLeftDrive.getPower();
+        double frontRightPower = frontRightDrive.getPower();
+        double backLeftPower = frontRightDrive.getPower();
+        double backRightPower = frontRightDrive.getPower();
+
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Motors", "Front Left (%.2f)", frontLeftPower);
+        telemetry.addData("Motors", "Front Right (%.2f)", frontRightPower);
+        telemetry.addData("Motors", "Back Left (%.2f)", backLeftPower);
+        telemetry.addData("Motors", "Back Right (%.2f)", backRightPower);
+
+
+        // This section checks what bumpers/triggers are being pressed and changes the speed accordingly.
+
         if (this.gamepad1.right_trigger > 0.5) {
+            telemetry.addData("Speed", "Fast Boi");
             speed = 1.0;
         } else if (this.gamepad1.left_trigger > 0.5) {
+            telemetry.addData("Speed", "Slow Boi");
             speed = 0.5;
         } else if (this.gamepad1.right_bumper) {
+            telemetry.addData("Speed", "Super Slow Boi");
             speed = 0.25;
+        } else {
+            telemetry.addData("Speed", "Normal Boi");
         }
+
+
+        // This section checks if the Y or A buttons on the first controller are being pressed and moves the duck spinner.
 
         if (this.gamepad1.y) {
-           // turnOnSpinner(0.65);
-            duckSpinner.setPower(0.65);
+            telemetry.addData("Duck Spinner", "Clockwise Spin");
+           turnOnSpinner(0.65);
         } else if (this.gamepad1.a) {
-           // turnOnSpinner(-0.65);
-            duckSpinner.setPower(-0.65);
+            telemetry.addData("Duck Spinner", "Counterclockwise Spin");
+           turnOnSpinner(-0.65);
         } else {
-            //turnOnSpinner(0);
-            duckSpinner.setPower(0);
+            telemetry.addData("Duck Spinner", "Not running");
+            turnOnSpinner(0);
         }
 
+
+        // This section checks if the A or B buttons on the second controller are being presses and moves the claw.
 
         telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
         if (this.gamepad2.a) {
             claw.getController().setServoPosition(claw.getPortNumber(), 0);
+            telemetry.addData("Claw", "Closed");
         } else if (this.gamepad2.b) {
             claw.getController().setServoPosition(claw.getPortNumber(), 0.25);
+            telemetry.addData("Claw", "Open");
         }
+
+
+        // This section finds the position of the left joystick on the second controller and moves the arm.
 
         if (this.gamepad2.left_stick_y > 0.5) {
             clawArm.setDirection(DcMotor.Direction.FORWARD);
             clawArm.setPower(0.3);
+            // This lowers the arm.
         } else if (this.gamepad2.left_stick_y < -0.5) {
+            // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
             clawArm.setDirection(DcMotor.Direction.REVERSE);
             clawArm.setPower(1);
         } else {
             clawArm.setDirection(DcMotor.Direction.REVERSE);
             clawArm.setPower(0.1);
-            //setClawArmPower(true);
+            // This keeps the arm held at whatever position it is currently at when not moving it with the joysticks.
+            // It will drift down if the arm is holding freight.
         }
-
-/*
-            // 1 below
-            //tennisArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            //clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            // Don't remember if next line is needed.  I believe setTargetPosition is inited to zero so probably not needed
-            //clawArm.setTargetPosition(0);
-            // 2 below
-            clawArm.setPower(0.65); //set to the max speed you want the arm to move at
-        }
-
-        public void setClawArmPower(boolean up)
-        {
-            if(up)
-            {
-                clawArm.setTargetPosition(clawArm.getCurrentPosition()+200);
-                clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                // 3 below
-                //tennisArm.setPower(0.7);
-            } else {
-                clawArm.setTargetPosition(clawArm.getCurrentPosition()-200);
-                clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                // 4 below
-                //tennisArm.setPower(-0.7);
-            }
-        }
-    /*
-    }*/
-
-
-        // Setup a variable for each drive wheel to save power level for telemetry
-        //double leftPower;
-        //double rightPower;
-
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
-
-        // POV Mode uses left stick to go forward, and right stick to turn.
-        // - This uses basic math to combine motions and is easier to drive straight.
-        //double drive = -gamepad1.left_stick_y;
-        //double turn  =  gamepad1.right_stick_x;
-        //leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
-        // leftPower  = -gamepad1.left_stick_y ;
-        // rightPower = -gamepad1.right_stick_y ;
-
-        // Send calculated power to wheels
-        //leftDrive.setPower(leftPower);
-        //rightDrive.setPower(rightPower);
-
-        // Show the elapsed game time and wheel power.
-        //telemetry.addData("Status", "Run Time: " + runtime.toString());
-        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
 
     }
-        private void setServoPosition (CRServo claw,double v){
-        }
+
 
         /*
          * Code to run ONCE after the driver hits STOP
@@ -246,11 +223,20 @@ public class BasicOpMode_IterativePt2 extends OpMode {
 
         }
 
+
+        /*
+        * The holding cell for all of the random functions we call above.
+         */
+
         public void turnOnSpinner ( double power){
+            // This function tells the duck spinning motor to run. It's pretty simple.
             duckSpinner.setPower(power);
         }
 
         public void setIndividualPowers ( float[] motorPowers){
+            // This function creates an array so that the function below works.
+            // Don't mess with this function unless you know what you're doing.
+
             if (motorPowers.length != 4) {
                 return;
             }
@@ -261,6 +247,9 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         }
 
         private void singleJoystickDrive () {
+            // We don't really know how this function works, but it makes the wheels drive, so we don't question it.
+            // Don't mess with this function unless you REALLY know what you're doing.
+
             float leftX = this.gamepad1.left_stick_x;
             float leftY = this.gamepad1.left_stick_y;
             float rightX = this.gamepad1.right_stick_x;
@@ -292,6 +281,7 @@ public class BasicOpMode_IterativePt2 extends OpMode {
         }
 
         private float getLargestAbsVal ( float[] values){
+            // This function does some math!
             float max = 0;
             for (float val : values) {
                 if (Math.abs(val) > max) {
