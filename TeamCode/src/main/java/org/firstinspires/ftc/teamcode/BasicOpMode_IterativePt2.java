@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 @TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class BasicOpMode_IterativePt2 extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

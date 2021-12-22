@@ -36,23 +36,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This file contains an example of an iterative (Non-Linear) "OpMode".
+ * This file our iterative (Non-Linear) "OpMode" for TeleOp.
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
  * The names of OpModes appear on the menu of the FTC Driver Station.
  * When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
+ * class is selected on the Robot Controller and executed.
+ * This particular one is called "Lean Mean TeleOp Machine". I had a little too much fun with naming this.
  *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all iterative OpModes contain.
+ * This OpMode controls the functions of the robot during the driver-controlled period.
  *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ * If the "@Disabled" line is not commented out, the program will not show up on the driver hub.
+ * If you ever have problems with the program not showing up on the driver hub, it's probably because of that.
+ *
+ * Throughout this program, there are comments explaining what everything does because previous programmers
+ * did a horrible job of doing that.
  */
 
 @TeleOp(name="Lean Mean TeleOp Machine", group="Iterative Opmode")
 //@Disabled
 public class Lean_Mean_Teleop_Machine extends OpMode {
-    // Declare OpMode members.
+
+    // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
     public DcMotor frontLeftDrive;
     public DcMotor frontRightDrive;
@@ -69,13 +73,11 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
      */
     @Override
     public void init() {
-        telemetry.addData("Status", "Initialized");
         //void init(Telemetry telemetry, DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive)
 
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
+        // This section turns the names of the pieces of hardware into variables that we can program with.
+        // Make sure that the device name is the exact same thing you typed in on the configuration on the driver hub.
         frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
@@ -85,15 +87,7 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         claw = hardwareMap.get(CRServo.class, "claw");
 
 
-        // this.frontLeftDrive = frontLeftDrive;
-        // this.frontRightDrive = frontRightDrive;
-        // this.backLeftDrive = backLeftDrive;
-        // this.backRightDrive = backRightDrive;
-
-        //frontLeftDrive.setTargetPosition(0);
-        //frontRightDrive.setTargetPosition(0);
-        //backLeftDrive.setTargetPosition(0);
-        //backRightDrive.setTargetPosition(0);
+        // This section sets the direction of all of the motors. Depending on the motor, this may change later in the program.
 
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -101,13 +95,6 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         duckSpinner.setDirection(DcMotor.Direction.FORWARD);
 
-
-
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        //  leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        // rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -141,16 +128,14 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         // This little section updates the driver hub on the runtime and the motor powers.
         // It's mostly used for troubleshooting.
 
-        double frontLeftPower = frontLeftDrive.getPower();
-        double frontRightPower = frontRightDrive.getPower();
-        double backLeftPower = frontRightDrive.getPower();
-        double backRightPower = frontRightDrive.getPower();
-
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "Front Left (%.2f)", frontLeftPower);
-        telemetry.addData("Motors", "Front Right (%.2f)", frontRightPower);
-        telemetry.addData("Motors", "Back Left (%.2f)", backLeftPower);
-        telemetry.addData("Motors", "Back Right (%.2f)", backRightPower);
+        telemetry.addData("Motors", "Front Left (%.2f)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Front Right (%.2f)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Back Left (%.2f)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Back Right (%.2f)", backRightDrive.getPower(), backLeftDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
+        telemetry.addData("Motors", "Arm (%.2f)", clawArm.getPower());
+
 
 
         // This section checks what bumpers/triggers are being pressed and changes the speed accordingly.
@@ -164,8 +149,9 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         } else if (this.gamepad1.right_bumper) {
             telemetry.addData("Speed", "Super Slow Boi");
             speed = 0.25;
-        } else {
+        } else if (this.gamepad1.left_bumper) {
             telemetry.addData("Speed", "Normal Boi");
+            speed = 0.75;
         }
 
 
@@ -174,6 +160,7 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         if (this.gamepad1.y) {
             telemetry.addData("Duck Spinner", "Clockwise Spin");
            turnOnSpinner(0.65);
+
         } else if (this.gamepad1.a) {
             telemetry.addData("Duck Spinner", "Counterclockwise Spin");
            turnOnSpinner(-0.65);
@@ -188,9 +175,13 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
         if (this.gamepad2.a) {
             claw.getController().setServoPosition(claw.getPortNumber(), 0);
-            telemetry.addData("Claw", "Closed");
         } else if (this.gamepad2.b) {
             claw.getController().setServoPosition(claw.getPortNumber(), 0.25);
+        }
+
+        if (claw.getController().getServoPosition(claw.getPortNumber()) == 0){
+            telemetry.addData("Claw", "Closed");
+        } else if (claw.getController().getServoPosition(claw.getPortNumber()) == 0.25){
             telemetry.addData("Claw", "Open");
         }
 
@@ -199,12 +190,14 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
 
         if (this.gamepad2.left_stick_y > 0.5) {
             clawArm.setDirection(DcMotor.Direction.FORWARD);
-            clawArm.setPower(0.3);
+            clawArm.setPower(0.25);
+            telemetry.addData("Arm", "Lowering Arm");
             // This lowers the arm.
         } else if (this.gamepad2.left_stick_y < -0.5) {
             // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
             clawArm.setDirection(DcMotor.Direction.REVERSE);
             clawArm.setPower(1);
+            telemetry.addData("Arm", "Raising Arm");
         } else {
             clawArm.setDirection(DcMotor.Direction.REVERSE);
             clawArm.setPower(0.1);
@@ -292,9 +285,3 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         }
 
 }
-
-
-
-
-
-

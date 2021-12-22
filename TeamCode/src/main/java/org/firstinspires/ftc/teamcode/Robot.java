@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,30 +21,64 @@ import org.tensorflow.lite.Interpreter;
 
 import java.io.File;
 
-public class Robot{
+public class Robot {
+    //public static DcMotor frontLeftDrive;
     //  public Vector2d position;
 
-    public DcMotor frontLeftDrive;
-    public  final double nintydegreeturninches = 4 * 3.1415;
-    public DcMotor frontRightDrive;
-    public DcMotor backLeftDrive;
-    public DcMotor backRightDrive;
-    public DcMotor duckSpinner;
-    public ColorSensor Color;
+    private DcMotor frontLeftDrive = null;
+    private DcMotor frontRightDrive = null;
+    private DcMotor backLeftDrive = null;
+    private DcMotor backRightDrive = null;
+    private DcMotor duckSpinner = null;
+    private ColorSensor Color;
     private final double wheelSizeMM = 100;
-    public Telemetry telemetry;
+    private Telemetry telemetry;
 
 
     //init and declare var
     private static int maxSpeed = 1;
+    private OpMode opmode;
+    private HardwareMap hardwareMap;
+
     //construct robot
-    public Robot (DcMotor duckSpinner, DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive, Telemetry T){
+    public Robot() {
+
+    }
+
+
+    public void init(HardwareMap hardwareMap, Telemetry telemetry, OpMode opmode){
+        this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
+        this.opmode = opmode;
+
+            frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+            frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+            backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+            backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+            duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
+            //clawArm = hardwareMap.get(DcMotor.class, "clawArm");
+            //claw = hardwareMap.get(CRServo.class, "claw");
+
+
         this.frontLeftDrive = frontLeftDrive;
         this.frontRightDrive = frontRightDrive;
         this.backLeftDrive = backLeftDrive;
         this.backRightDrive = backRightDrive;
         this.duckSpinner = duckSpinner;
-        this.telemetry = T;
+
+        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        duckSpinner.setDirection(DcMotor.Direction.FORWARD);
+
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        telemetry.addData("Status", "Initialized");
+
     }
 
     public double inchesToTicks(double inches){
@@ -87,6 +125,7 @@ public class Robot{
     public void stopDuckSpinner(){
         duckSpinner.setPower(0);
     }
+
     public void setTeleMode() {
         telemetry.addData("Mode", "Init for Tele");
 
@@ -110,13 +149,7 @@ public class Robot{
 
     }
 
-    public void setWheelPower(double power){
-        // sets the 4 drive trains to a certain power between 0 - 1
-        backLeftDrive.setPower(power);
-        frontLeftDrive.setPower(power);
-        frontRightDrive.setPower(power);
-        backRightDrive.setPower(power);
-    }
+
     public void setEncoderMode() {
         //sets the drivetrain in a drive to position mode
         telemetry.addData("Mode", "Init for Encoder");
@@ -219,15 +252,112 @@ public class Robot{
     }
     public void Halt(){
         //stops the wheels
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         telemetry.addData("Mode", "Stopping");
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backRightDrive.setPower(0);
         backLeftDrive.setPower(0);
     }
+
+    public void stopAllMotors() {
+
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+    }
+
+    /*
+    * org.firstinspires.ftc.teamcode.Autonomous Function Holding Cell
+     */
+
+
+     public void setTargets(String direction, int ticks) {
+
+            if (direction == "Left") {
+                frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+                backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+                frontLeftDrive.setTargetPosition(ticks - frontLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(ticks + frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
+
+            } else if (direction == "Right"){
+                frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+                backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+                frontLeftDrive.setTargetPosition(ticks + frontLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(ticks - frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(ticks - backLeftDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(ticks + backRightDrive.getCurrentPosition());
+
+            } else if (direction == "Forward"){
+                frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+                backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+                frontLeftDrive.setTargetPosition(ticks + frontLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(ticks + frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(ticks + backRightDrive.getCurrentPosition());
+
+            } else if (direction == "Backward"){
+                frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+                backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+                backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+                frontLeftDrive.setTargetPosition(ticks - frontLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(ticks - frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(ticks - backLeftDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
+
+
+
+            }
+
+            }
+
+
+    public  void positionRunningMode(){
+
+            frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            }
+
+    public  void powerSet(double speed) {
+            frontLeftDrive.setPower(speed);
+            frontRightDrive.setPower(speed);
+            backLeftDrive.setPower(speed);
+            backRightDrive.setPower(speed);
+            }
+
+    public  void encoderRunningMode(){
+            frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
+            public  void tellMotorOutput(){
+                telemetry.addData("Motors", "Front Left (%.2f)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition());
+                telemetry.addData("Motors", "Front Right (%.2f)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition());
+                telemetry.addData("Motors", "Back Left (%.2f)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition());
+                telemetry.addData("Motors", "Back Right (%.2f)", backRightDrive.getPower(), backLeftDrive.getCurrentPosition());
+            }
+
 
 }
