@@ -36,28 +36,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 
+
 /**
  * This is the autonomous mode. It moves the robot without us having to touch the controller.
  * Previous programmers really sucked at explaining what any of this meant, so we're trying to do better.
  *
  */
 
-public class AutonomousPLUS extends LinearOpMode {
+public abstract class AutonomousPLUS extends LinearOpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
-    public DcMotor frontLeftDrive = null;
-    public DcMotor frontRightDrive = null;
-    public DcMotor backLeftDrive = null;
-    public DcMotor backRightDrive = null;
-    public DcMotor duckSpinner = null;
-    public DcMotor clawArm;
-    public CRServo claw;
+    //todo: maxSeconds inequality
 
     public double speed = 0.15;
 
     //DO NOT DELETE THIS LINE! CAPITALIZATION IS VERY IMPORTANT!!!
-    Robot robot = new Robot();
+    public Robot robot = new Robot();
 
     @Override
     public void runOpMode() {
@@ -65,41 +60,43 @@ public class AutonomousPLUS extends LinearOpMode {
     }
 
 
-    //public int ticksToInches(double inches){
-    // With the 96mm wheels, the number below is the ticks per inch. Do not change the number unless you change the wheels.
-    //return (int) (inches * 30.318997078);
-    //telemetry.addData("Update", "This function is currently useless");
-    //}
-
     public void moveRobotForward(int ticks) {
-        if (!opModeIsActive()){
+        if (opModeIsActive()){
+            robot.encoderReset();
             robot.setTargets("Forward", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (backLeftDrive.isBusy() && frontLeftDrive.isBusy()) &&
-                    (frontRightDrive.isBusy() && backRightDrive.isBusy())) {
+                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
+                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())){
                 robot.tellMotorOutput();
                 //nothings here
             }
 
+            telemetry.addData("Is busy? FL", robot.frontLeftDrive.isBusy() ? "yes" : "no");
+            telemetry.addData("Is busy? FR", robot.frontRightDrive.isBusy() ? "yes" : "no");
+            telemetry.addData("Is busy? BL", robot.backLeftDrive.isBusy() ? "yes" : "no");
+            telemetry.addData("Is busy? BR", robot.backRightDrive.isBusy() ? "yes" : "no");
+            telemetry.addData("Curr Time", runtime.seconds());
+            telemetry.addData("Opmode is active? ", opModeIsActive() ? "yes" : "no");
+
             robot.stopAllMotors();
             robot.encoderRunningMode();
-
+            robot.stopAllMotors();
 
         }
     }
 
     public void moveRobotBackward(int ticks){
-        if (!opModeIsActive()){
+        if (opModeIsActive()){
             robot.setTargets("Backward", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (backLeftDrive.isBusy() && frontLeftDrive.isBusy()) &&
-                    (frontRightDrive.isBusy() && backRightDrive.isBusy())) {
+                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
+                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -113,14 +110,14 @@ public class AutonomousPLUS extends LinearOpMode {
     }
     public void moveRobotLeft(int ticks) {
 
-        if (!opModeIsActive()){
+        if (opModeIsActive()){
             robot.setTargets("Left", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (backLeftDrive.isBusy() && frontLeftDrive.isBusy()) &&
-                    (frontRightDrive.isBusy() && backRightDrive.isBusy())) {
+                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
+                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -134,14 +131,14 @@ public class AutonomousPLUS extends LinearOpMode {
 
     public void moveRobotRight(int ticks) {
 
-        if (!opModeIsActive()) {
+        if (opModeIsActive()) {
             robot.setTargets("Right", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (backLeftDrive.isBusy() && frontLeftDrive.isBusy()) &&
-                    (frontRightDrive.isBusy() && backRightDrive.isBusy())) {
+                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
+                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())) {
                 robot.tellMotorOutput();
                 //nothings here
             }

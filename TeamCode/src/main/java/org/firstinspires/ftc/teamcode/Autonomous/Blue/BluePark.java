@@ -10,19 +10,21 @@ public class BluePark extends AutonomousPLUS {
 
     Robot robot = new Robot();
 
+
     @Override
     public void runOpMode() {
 
         super.runOpMode();
+
         //Do this to pass inspection.
         waitForStart();
 
-        //moveRobotRight(500);
-        //Robot.stopAllMotors();
-        //sleep(300);
-        moveRobotForward(500);
+        moveRobotForward(50);
+        //robot.stopAllMotors();
+//        sleep(300);
+       // moveRobotRight(500);
 
-        robot.stopAllMotors();
+    //    robot.stopAllMotors();
 
 
     }

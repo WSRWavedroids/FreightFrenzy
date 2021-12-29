@@ -68,6 +68,8 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
 
     private double speed = 0.75;
 
+    public Robot robot = new Robot();
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -159,14 +161,14 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
 
         if (this.gamepad1.y) {
             telemetry.addData("Duck Spinner", "Clockwise Spin");
-           turnOnSpinner(0.65);
+           robot.turnDuckSpinner(0.65);
 
         } else if (this.gamepad1.a) {
             telemetry.addData("Duck Spinner", "Counterclockwise Spin");
-           turnOnSpinner(-0.65);
+           robot.turnDuckSpinner(-0.65);
         } else {
             telemetry.addData("Duck Spinner", "Not running");
-            turnOnSpinner(0);
+            robot.stopDuckSpinner();
         }
 
 
@@ -176,12 +178,14 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         if (this.gamepad2.a) {
             claw.getController().setServoPosition(claw.getPortNumber(), 0);
         } else if (this.gamepad2.b) {
-            claw.getController().setServoPosition(claw.getPortNumber(), 0.25);
+            claw.getController().setServoPosition(claw.getPortNumber(), 0.4);
         }
+
+        // This section checks what position the claw servo is in and updates the driver hub accordingly.
 
         if (claw.getController().getServoPosition(claw.getPortNumber()) == 0){
             telemetry.addData("Claw", "Closed");
-        } else if (claw.getController().getServoPosition(claw.getPortNumber()) == 0.25){
+        } else if (claw.getController().getServoPosition(claw.getPortNumber()) == 0.4){
             telemetry.addData("Claw", "Open");
         }
 
@@ -189,20 +193,22 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         // This section finds the position of the left joystick on the second controller and moves the arm.
 
         if (this.gamepad2.left_stick_y > 0.5) {
+            // This lowers the arm.
             clawArm.setDirection(DcMotor.Direction.FORWARD);
             clawArm.setPower(0.25);
             telemetry.addData("Arm", "Lowering Arm");
-            // This lowers the arm.
+
         } else if (this.gamepad2.left_stick_y < -0.5) {
             // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
             clawArm.setDirection(DcMotor.Direction.REVERSE);
             clawArm.setPower(1);
             telemetry.addData("Arm", "Raising Arm");
+
         } else {
+            // This keeps the arm held at whatever position it is currently at when not moving it with the joysticks.
             clawArm.setDirection(DcMotor.Direction.REVERSE);
             clawArm.setPower(0.1);
-            // This keeps the arm held at whatever position it is currently at when not moving it with the joysticks.
-            // It will drift down if the arm is holding freight.
+
         }
 
     }
@@ -212,19 +218,12 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
          * Code to run ONCE after the driver hits STOP
          */
         @Override
-        public void stop () {
-
-        }
+        public void stop () { telemetry.addData("Status", "Robot Stopped"); }
 
 
         /*
         * The holding cell for all of the random functions we call above.
          */
-
-        public void turnOnSpinner ( double power){
-            // This function tells the duck spinning motor to run. It's pretty simple.
-            duckSpinner.setPower(power);
-        }
 
         public void setIndividualPowers ( float[] motorPowers){
             // This function creates an array so that the function below works.

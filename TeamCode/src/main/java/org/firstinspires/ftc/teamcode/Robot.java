@@ -25,17 +25,18 @@ public class Robot {
     //public static DcMotor frontLeftDrive;
     //  public Vector2d position;
 
-    private DcMotor frontLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor backRightDrive = null;
-    private DcMotor duckSpinner = null;
+    public DcMotor frontLeftDrive;
+    public DcMotor frontRightDrive;
+    public DcMotor backLeftDrive;
+    public DcMotor backRightDrive;
+    private DcMotor duckSpinner;
+    private DcMotor clawArm;
+    private CRServo claw;
     private ColorSensor Color;
     private final double wheelSizeMM = 100;
     private Telemetry telemetry;
 
-
-    //init and declare var
+    //init and declare war
     private static int maxSpeed = 1;
     private OpMode opmode;
     private HardwareMap hardwareMap;
@@ -45,19 +46,19 @@ public class Robot {
 
     }
 
-
+    //Initialize motors and servos
     public void init(HardwareMap hardwareMap, Telemetry telemetry, OpMode opmode){
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
         this.opmode = opmode;
 
-            frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-            frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-            backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-            backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-            duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
-            //clawArm = hardwareMap.get(DcMotor.class, "clawArm");
-            //claw = hardwareMap.get(CRServo.class, "claw");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
+        clawArm = hardwareMap.get(DcMotor.class, "clawArm");
+        claw = hardwareMap.get(CRServo.class, "claw");
 
 
         this.frontLeftDrive = frontLeftDrive;
@@ -65,12 +66,15 @@ public class Robot {
         this.backLeftDrive = backLeftDrive;
         this.backRightDrive = backRightDrive;
         this.duckSpinner = duckSpinner;
+        this.clawArm = clawArm;
+        this.claw = claw;
 
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         duckSpinner.setDirection(DcMotor.Direction.FORWARD);
+        clawArm.setDirection(DcMotor.Direction.FORWARD);
 
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -84,8 +88,16 @@ public class Robot {
     public double inchesToTicks(double inches){
         // returns the inches * ticks per rotation / wheel circ
         return ((inches/12.25) * 537.6 / .5);
-
     }
+
+    /*
+    public int ticksToInches(double inches){
+        // With the 96mm wheels, the number below is the ticks per inch. Do not change the number unless you change the wheels.
+        return (int) (inches * 30.318997078);
+        telemetry.addData("Update", "This function is currently useless");
+    }
+    */
+
     public void encoderDriveInches(double inches){
         int ticks = (int) -inchesToTicks(inches);
         backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() + ticks);
@@ -118,8 +130,8 @@ public class Robot {
         backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + ticks);
     }
 
-    public void turnDuckSpinner(){
-        duckSpinner.setPower(0.6);
+    public void turnDuckSpinner(double power){
+        duckSpinner.setPower(power);
         telemetry.addData("Ducks", "Whee!");
     }
     public void stopDuckSpinner(){
@@ -134,19 +146,22 @@ public class Robot {
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        duckSpinner.setDirection(DcMotor.Direction.FORWARD);
+        clawArm.setDirection(DcMotor.Direction.FORWARD);
+
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        duckSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        clawArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        duckSpinner.setTargetPosition(duckSpinner.getCurrentPosition());
-
         duckSpinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        duckSpinner.setDirection(DcMotor.Direction.FORWARD);
-
+        clawArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
@@ -192,16 +207,19 @@ public class Robot {
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        duckSpinner.setDirection(DcMotor.Direction.FORWARD);
+
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         duckSpinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        duckSpinner.setDirection(DcMotor.Direction.FORWARD);
+
     }
 
     public double getHeading(double leftStickX, double leftStickY){
@@ -272,7 +290,7 @@ public class Robot {
     }
 
     /*
-    * org.firstinspires.ftc.teamcode.Autonomous Function Holding Cell
+    * Autonomous Function Holding Cell
      */
 
 
@@ -322,14 +340,11 @@ public class Robot {
                 backLeftDrive.setTargetPosition(ticks - backLeftDrive.getCurrentPosition());
                 backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
 
-
-
             }
 
-            }
+     }
 
-
-    public  void positionRunningMode(){
+    public void positionRunningMode(){
 
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -338,26 +353,36 @@ public class Robot {
 
             }
 
-    public  void powerSet(double speed) {
+    public void powerSet(double speed) {
             frontLeftDrive.setPower(speed);
             frontRightDrive.setPower(speed);
             backLeftDrive.setPower(speed);
             backRightDrive.setPower(speed);
-            }
 
-    public  void encoderRunningMode(){
+     }
+
+    public void encoderRunningMode(){
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
 
-            public  void tellMotorOutput(){
-                telemetry.addData("Motors", "Front Left (%.2f)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition());
-                telemetry.addData("Motors", "Front Right (%.2f)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition());
-                telemetry.addData("Motors", "Back Left (%.2f)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition());
-                telemetry.addData("Motors", "Back Right (%.2f)", backRightDrive.getPower(), backLeftDrive.getCurrentPosition());
-            }
+     }
 
+     public void encoderReset(){
+         frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+         frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+         backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+         backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+     }
+
+     public void tellMotorOutput(){
+            telemetry.addData("Motors", "FL Power(%.2f)", frontLeftDrive.getPower(), "FL Location", frontLeftDrive.getCurrentPosition(), "FL Target", frontLeftDrive.getTargetPosition());
+            telemetry.addData("Motors", "FR Power (%.2f)", frontRightDrive.getPower(), "FR Location", frontRightDrive.getCurrentPosition(), "FR Target", frontRightDrive.getTargetPosition());
+            telemetry.addData("Motors", "BL Power (%.2f)", backLeftDrive.getPower(), "BL Location", backLeftDrive.getCurrentPosition(), "BL Target", backLeftDrive.getTargetPosition());
+            telemetry.addData("Motors", "BR Power (%.2f)", backRightDrive.getPower(), "BR Location", backRightDrive.getCurrentPosition(), "BR Target", backRightDrive.getTargetPosition());
+
+
+     }
 
 }
