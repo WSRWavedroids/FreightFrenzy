@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This file our iterative (Non-Linear) "OpMode" for TeleOp.
+ * This file is our iterative (Non-Linear) "OpMode" for TeleOp.
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
  * The names of OpModes appear on the menu of the FTC Driver Station.
  * When an selection is made from the menu, the corresponding OpMode
@@ -53,21 +53,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Lean Mean TeleOp Machine", group="Iterative Opmode")
-//@Disabled
 public class Lean_Mean_Teleop_Machine extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
-    public DcMotor frontLeftDrive;
-    public DcMotor frontRightDrive;
-    public DcMotor backLeftDrive;
-    public DcMotor backRightDrive;
-    public DcMotor duckSpinner;
-    public DcMotor clawArm;
-    public CRServo claw;
-
     private double speed = 0.75;
-
     public Robot robot = new Robot();
 
     /*
@@ -75,28 +65,9 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
      */
     @Override
     public void init() {
-        //void init(Telemetry telemetry, DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive)
 
-
-        // This section turns the names of the pieces of hardware into variables that we can program with.
-        // Make sure that the device name is the exact same thing you typed in on the configuration on the driver hub.
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-        duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
-        clawArm = hardwareMap.get(DcMotor.class, "clawArm");
-        claw = hardwareMap.get(CRServo.class, "claw");
-
-
-        // This section sets the direction of all of the motors. Depending on the motor, this may change later in the program.
-
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        duckSpinner.setDirection(DcMotor.Direction.FORWARD);
-
+        // Call the initialization protocol from the Robot class.
+        robot.init(hardwareMap, telemetry, this);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -106,9 +77,7 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
      */
     @Override
-    public void init_loop() {
-        telemetry.addData("HYPE", "ARE! YOU! READY?!?!?!?!");
-    }
+    public void init_loop() {telemetry.addData("HYPE", "ARE! YOU! READY?!?!?!?!");}
 
     /*
      * Code to run ONCE when the driver hits PLAY
@@ -129,19 +98,17 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
 
         // This little section updates the driver hub on the runtime and the motor powers.
         // It's mostly used for troubleshooting.
-
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "Front Left (%.2f)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Front Right (%.2f)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Back Left (%.2f)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Back Right (%.2f)", backRightDrive.getPower(), backLeftDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
-        telemetry.addData("Motors", "Arm (%.2f)", clawArm.getPower());
+        telemetry.addData("Motors", "Front Left (%.2f)", robot.frontLeftDrive.getPower(), robot.frontLeftDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Front Right (%.2f)", robot.frontRightDrive.getPower(), robot.frontRightDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Back Left (%.2f)", robot.backLeftDrive.getPower(), robot.backLeftDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Back Right (%.2f)", robot.backRightDrive.getPower(), robot.backLeftDrive.getCurrentPosition());
+        telemetry.addData("Motors", "Duck Spinner (%.2f)", robot.duckSpinner.getPower());
+        telemetry.addData("Motors", "Arm (%.2f)", robot.clawArm.getPower());
 
 
 
         // This section checks what bumpers/triggers are being pressed and changes the speed accordingly.
-
         if (this.gamepad1.right_trigger > 0.5) {
             telemetry.addData("Speed", "Fast Boi");
             speed = 1.0;
@@ -161,11 +128,11 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
 
         if (this.gamepad1.y) {
             telemetry.addData("Duck Spinner", "Clockwise Spin");
-           robot.turnDuckSpinner(0.65);
+            robot.turnDuckSpinner(0.65);
 
         } else if (this.gamepad1.a) {
             telemetry.addData("Duck Spinner", "Counterclockwise Spin");
-           robot.turnDuckSpinner(-0.65);
+            robot.turnDuckSpinner(-0.65);
         } else {
             telemetry.addData("Duck Spinner", "Not running");
             robot.stopDuckSpinner();
@@ -174,18 +141,18 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
 
         // This section checks if the A or B buttons on the second controller are being presses and moves the claw.
 
-        telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
+        telemetry.addData("ServoPort", "Port: " + robot.claw.getPortNumber());
         if (this.gamepad2.a) {
-            claw.getController().setServoPosition(claw.getPortNumber(), 0);
+            robot.claw.getController().setServoPosition(robot.claw.getPortNumber(), 0);
         } else if (this.gamepad2.b) {
-            claw.getController().setServoPosition(claw.getPortNumber(), 0.4);
+            robot.claw.getController().setServoPosition(robot.claw.getPortNumber(), 0.4);
         }
 
         // This section checks what position the claw servo is in and updates the driver hub accordingly.
 
-        if (claw.getController().getServoPosition(claw.getPortNumber()) == 0){
+        if (robot.claw.getController().getServoPosition(robot.claw.getPortNumber()) == 0){
             telemetry.addData("Claw", "Closed");
-        } else if (claw.getController().getServoPosition(claw.getPortNumber()) == 0.4){
+        } else if (robot.claw.getController().getServoPosition(robot.claw.getPortNumber()) == 0.4){
             telemetry.addData("Claw", "Open");
         }
 
@@ -193,21 +160,30 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         // This section finds the position of the left joystick on the second controller and moves the arm.
 
         if (this.gamepad2.left_stick_y > 0.5) {
+
             // This lowers the arm.
-            clawArm.setDirection(DcMotor.Direction.FORWARD);
-            clawArm.setPower(0.25);
+            robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
+
+            if (this.gamepad2.left_bumper) {
+                robot.clawArm.setPower(0.8);
+            } else {
+                robot.clawArm.setPower(0.25);
+            }
+
             telemetry.addData("Arm", "Lowering Arm");
 
         } else if (this.gamepad2.left_stick_y < -0.5) {
+
             // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
-            clawArm.setDirection(DcMotor.Direction.REVERSE);
-            clawArm.setPower(1);
+            robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
+            robot.clawArm.setPower(0.8);
             telemetry.addData("Arm", "Raising Arm");
 
         } else {
+
             // This keeps the arm held at whatever position it is currently at when not moving it with the joysticks.
-            clawArm.setDirection(DcMotor.Direction.REVERSE);
-            clawArm.setPower(0.1);
+            robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
+            robot.clawArm.setPower(0.1);
 
         }
 
@@ -232,10 +208,10 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
             if (motorPowers.length != 4) {
                 return;
             }
-            frontLeftDrive.setPower(motorPowers[0]);
-            frontRightDrive.setPower(motorPowers[1]);
-            backLeftDrive.setPower(motorPowers[2]);
-            backRightDrive.setPower(motorPowers[3]);
+            robot.frontLeftDrive.setPower(motorPowers[0]);
+            robot.frontRightDrive.setPower(motorPowers[1]);
+            robot.backLeftDrive.setPower(motorPowers[2]);
+            robot.backRightDrive.setPower(motorPowers[3]);
         }
 
         private void singleJoystickDrive () {

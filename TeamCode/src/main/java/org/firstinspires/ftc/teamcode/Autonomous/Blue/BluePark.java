@@ -19,12 +19,11 @@ public class BluePark extends AutonomousPLUS {
         //Do this to pass inspection.
         waitForStart();
 
-        moveRobotForward(50);
+        moveRobotForward(50, 2);
         //robot.stopAllMotors();
-//        sleep(300);
-       // moveRobotRight(500);
-
-    //    robot.stopAllMotors();
+        //sleep(300);
+        //moveRobotRight(500);
+        //robot.stopAllMotors();
 
 
     }

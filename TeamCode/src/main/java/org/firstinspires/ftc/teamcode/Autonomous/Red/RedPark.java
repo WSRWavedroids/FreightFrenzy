@@ -17,9 +17,9 @@ import org.firstinspires.ftc.teamcode.Robot;
             //Do this to pass inspection.
             waitForStart();
 
-            moveRobotLeft(3000);
+            moveRobotLeft(3000, 2);
             sleep(300);
-            moveRobotForward(3000);
+            moveRobotForward(3000, 2);
 
         }
     }

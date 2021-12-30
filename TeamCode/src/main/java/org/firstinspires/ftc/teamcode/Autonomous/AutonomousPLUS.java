@@ -47,7 +47,6 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
-    //todo: maxSeconds inequality
 
     public double speed = 0.15;
 
@@ -60,7 +59,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     }
 
 
-    public void moveRobotForward(int ticks) {
+    public void moveRobotForward(int ticks, double maxSeconds) {
         if (opModeIsActive()){
             robot.encoderReset();
             robot.setTargets("Forward", ticks);
@@ -68,18 +67,10 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
-                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())){
+                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
                 robot.tellMotorOutput();
                 //nothings here
             }
-
-            telemetry.addData("Is busy? FL", robot.frontLeftDrive.isBusy() ? "yes" : "no");
-            telemetry.addData("Is busy? FR", robot.frontRightDrive.isBusy() ? "yes" : "no");
-            telemetry.addData("Is busy? BL", robot.backLeftDrive.isBusy() ? "yes" : "no");
-            telemetry.addData("Is busy? BR", robot.backRightDrive.isBusy() ? "yes" : "no");
-            telemetry.addData("Curr Time", runtime.seconds());
-            telemetry.addData("Opmode is active? ", opModeIsActive() ? "yes" : "no");
 
             robot.stopAllMotors();
             robot.encoderRunningMode();
@@ -88,15 +79,14 @@ public abstract class AutonomousPLUS extends LinearOpMode {
         }
     }
 
-    public void moveRobotBackward(int ticks){
+    public void moveRobotBackward(int ticks, double maxSeconds){
         if (opModeIsActive()){
             robot.setTargets("Backward", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
-                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())) {
+                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -108,7 +98,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
         }
 
     }
-    public void moveRobotLeft(int ticks) {
+    public void moveRobotLeft(int ticks, double maxSeconds) {
 
         if (opModeIsActive()){
             robot.setTargets("Left", ticks);
@@ -116,8 +106,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
-                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())) {
+                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -129,7 +118,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
         }
     }
 
-    public void moveRobotRight(int ticks) {
+    public void moveRobotRight(int ticks, double maxSeconds) {
 
         if (opModeIsActive()) {
             robot.setTargets("Right", ticks);
@@ -137,8 +126,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    (robot.backLeftDrive.isBusy() && robot.frontLeftDrive.isBusy()) &&
-                    (robot.frontRightDrive.isBusy() && robot.backRightDrive.isBusy())) {
+                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
                 robot.tellMotorOutput();
                 //nothings here
             }
