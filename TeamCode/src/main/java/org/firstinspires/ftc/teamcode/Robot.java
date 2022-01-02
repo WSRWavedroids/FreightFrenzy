@@ -164,8 +164,8 @@ public class Robot {
             telemetry.addData("Motors", "FR Power (%.2f)", frontRightDrive.getPower(), "FR Location", frontRightDrive.getCurrentPosition(), "FR Target", frontRightDrive.getTargetPosition());
             telemetry.addData("Motors", "BL Power (%.2f)", backLeftDrive.getPower(), "BL Location", backLeftDrive.getCurrentPosition(), "BL Target", backLeftDrive.getTargetPosition());
             telemetry.addData("Motors", "BR Power (%.2f)", backRightDrive.getPower(), "BR Location", backRightDrive.getCurrentPosition(), "BR Target", backRightDrive.getTargetPosition());
-
-
+            telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
+            telemetry.addData("Motors", "Arm (%.2f)", clawArm.getPower());
      }
 
 }

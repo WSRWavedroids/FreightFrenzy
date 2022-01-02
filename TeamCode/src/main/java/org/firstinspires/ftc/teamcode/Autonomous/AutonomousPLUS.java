@@ -56,12 +56,14 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap, telemetry, this);
+        robot.encoderReset();
+        robot.encoderRunningMode();
+
     }
 
 
     public void moveRobotForward(int ticks, double maxSeconds) {
         if (opModeIsActive()){
-            robot.encoderReset();
             robot.setTargets("Forward", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
@@ -137,4 +139,17 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
         }
     }
+
+    public void turnDuckSpinner(double maxSeconds){
+        robot.duckSpinner.setPower(0.65);
+
+        while (opModeIsActive() && getRuntime() < maxSeconds) {
+            robot.tellMotorOutput();
+            //nothings here
+        }
+
+        robot.stopAllMotors();
+
+    }
+
 }

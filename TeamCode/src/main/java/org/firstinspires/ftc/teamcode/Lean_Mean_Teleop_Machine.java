@@ -99,13 +99,7 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         // This little section updates the driver hub on the runtime and the motor powers.
         // It's mostly used for troubleshooting.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "Front Left (%.2f)", robot.frontLeftDrive.getPower(), robot.frontLeftDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Front Right (%.2f)", robot.frontRightDrive.getPower(), robot.frontRightDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Back Left (%.2f)", robot.backLeftDrive.getPower(), robot.backLeftDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Back Right (%.2f)", robot.backRightDrive.getPower(), robot.backLeftDrive.getCurrentPosition());
-        telemetry.addData("Motors", "Duck Spinner (%.2f)", robot.duckSpinner.getPower());
-        telemetry.addData("Motors", "Arm (%.2f)", robot.clawArm.getPower());
-
+        robot.tellMotorOutput();
 
 
         // This section checks what bumpers/triggers are being pressed and changes the speed accordingly.
