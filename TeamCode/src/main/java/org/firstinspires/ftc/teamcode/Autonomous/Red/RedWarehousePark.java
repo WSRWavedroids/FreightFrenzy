@@ -2,15 +2,13 @@ package org.firstinspires.ftc.teamcode.Autonomous.Red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 import org.firstinspires.ftc.teamcode.Robot;
 
 @Autonomous(group = "Red", name = "Red Warehouse Park")
-@Disabled
-public class RedSpinWarehousePark extends AutonomousPLUS {
-
-    Robot robot = new Robot();
+public class RedWarehousePark extends AutonomousPLUS {
 
 
     @Override
@@ -21,11 +19,13 @@ public class RedSpinWarehousePark extends AutonomousPLUS {
         //Do this to pass inspection.
         waitForStart();
 
-        //todo: Test Pseudo Code
-        moveRobotLeft(50, 2);
-        turnDuckSpinner(2);
-        moveRobotRight(100, 4);
-        robot.stopAllMotors();
+        robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
+        robot.clawArm.setPower(0.4);
+        sleep(1000);
+
+        moveRobotRight(2000);
+        sleep(300);
+        robot.encoderReset();
     }
 
 }

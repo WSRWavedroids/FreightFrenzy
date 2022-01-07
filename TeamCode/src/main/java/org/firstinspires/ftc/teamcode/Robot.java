@@ -99,33 +99,39 @@ public class Robot {
 
      public void setTargets(String direction, int ticks) {
 
-            if (direction == "Left") {
-                frontLeftDrive.setTargetPosition(ticks - frontLeftDrive.getCurrentPosition());
+            if (direction == "Right"){
+                frontLeftDrive.setTargetPosition(-ticks + frontLeftDrive.getCurrentPosition());
                 frontRightDrive.setTargetPosition(ticks + frontRightDrive.getCurrentPosition());
                 backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
-                backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(-ticks + backRightDrive.getCurrentPosition());
 
-            } else if (direction == "Right"){
+            } else if (direction == "Left"){
                 frontLeftDrive.setTargetPosition(ticks + frontLeftDrive.getCurrentPosition());
-                frontRightDrive.setTargetPosition(ticks - frontRightDrive.getCurrentPosition());
-                backLeftDrive.setTargetPosition(ticks - backLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(-ticks + frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(-ticks + backLeftDrive.getCurrentPosition());
                 backRightDrive.setTargetPosition(ticks + backRightDrive.getCurrentPosition());
 
             } else if (direction == "Forward"){
-                frontLeftDrive.setTargetPosition(ticks + frontLeftDrive.getCurrentPosition());
-                frontRightDrive.setTargetPosition(ticks + frontRightDrive.getCurrentPosition());
-                backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
-                backRightDrive.setTargetPosition(ticks + backRightDrive.getCurrentPosition());
+                frontLeftDrive.setTargetPosition(-ticks + frontLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(-ticks + frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(-ticks + backLeftDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(-ticks + backRightDrive.getCurrentPosition());
 
-            } else if (direction == "Backward"){
+            } else if (direction == "Backward") {
                 frontLeftDrive.setTargetPosition(ticks - frontLeftDrive.getCurrentPosition());
                 frontRightDrive.setTargetPosition(ticks - frontRightDrive.getCurrentPosition());
                 backLeftDrive.setTargetPosition(ticks - backLeftDrive.getCurrentPosition());
                 backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
 
-            }
+           /* else if (direction == "turnRight" )   {
+                frontLeftDrive.setTargetPosition(ticks + frontLeftDrive.getCurrentPosition());
+                frontRightDrive.setTargetPosition(ticks - frontRightDrive.getCurrentPosition());
+                backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
+                backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
 
-     }
+            }*/
+            }
+    }
 
     public void positionRunningMode(){
 
@@ -136,13 +142,19 @@ public class Robot {
 
             }
 
+    /* lic void powerSet(double frontLeftSpeed, double frontRightSpeed, double backLeftSpeed, double backRightSpeed) {
+            frontLeftDrive.setPower(frontLeftSpeed);
+            frontRightDrive.setPower(frontRightSpeed);
+            backLeftDrive.setPower(backLeftSpeed);
+            backRightDrive.setPower(backRightspeed);*/
     public void powerSet(double speed) {
-            frontLeftDrive.setPower(speed);
-            frontRightDrive.setPower(speed);
-            backLeftDrive.setPower(speed);
-            backRightDrive.setPower(speed);
+        frontLeftDrive.setPower(speed);
+        frontRightDrive.setPower(speed);
+        backLeftDrive.setPower(speed);
+        backRightDrive.setPower(speed);
 
-     }
+    }
+
 
     public void encoderRunningMode(){
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -160,12 +172,19 @@ public class Robot {
      }
 
      public void tellMotorOutput(){
-            telemetry.addData("Motors", "FL Power(%.2f)", frontLeftDrive.getPower(), "FL Location", frontLeftDrive.getCurrentPosition(), "FL Target", frontLeftDrive.getTargetPosition());
-            telemetry.addData("Motors", "FR Power (%.2f)", frontRightDrive.getPower(), "FR Location", frontRightDrive.getCurrentPosition(), "FR Target", frontRightDrive.getTargetPosition());
-            telemetry.addData("Motors", "BL Power (%.2f)", backLeftDrive.getPower(), "BL Location", backLeftDrive.getCurrentPosition(), "BL Target", backLeftDrive.getTargetPosition());
-            telemetry.addData("Motors", "BR Power (%.2f)", backRightDrive.getPower(), "BR Location", backRightDrive.getCurrentPosition(), "BR Target", backRightDrive.getTargetPosition());
+            telemetry.addData("Motors", String.format("FL Power(%.2f) FL Location (%d) FL Target (%d)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition(), frontLeftDrive.getTargetPosition()));
+            telemetry.addData("Motors", String.format("FR Power(%.2f) FR Location (%d) FR Target (%d)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition(), frontRightDrive.getTargetPosition()));
+            telemetry.addData("Motors", String.format("BL Power(%.2f) BL Location (%d) BL Target (%d)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition(), backLeftDrive.getTargetPosition()));
+            telemetry.addData("Motors", String.format("BR Power(%.2f) BR Location (%d) BR Target (%d)", backRightDrive.getPower(), backRightDrive.getCurrentPosition(), backRightDrive.getTargetPosition()));
             telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
             telemetry.addData("Motors", "Arm (%.2f)", clawArm.getPower());
+            telemetry.update();
      }
 
-}
+    public double inchesToTicks(double inches){
+        // returns the inches * ticks per rotation / wheel circ
+        return ((inches/12.25) * 537.6 / .5);
+        //todo At 0.5 speed, 1500 ticks = 32 inches
+    }
+
+    }

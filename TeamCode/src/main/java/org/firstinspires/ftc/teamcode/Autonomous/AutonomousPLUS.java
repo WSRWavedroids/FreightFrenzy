@@ -48,7 +48,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
 
-    public double speed = 0.15;
+    public double speed = 0.5;
 
     //DO NOT DELETE THIS LINE! CAPITALIZATION IS VERY IMPORTANT!!!
     public Robot robot = new Robot();
@@ -62,14 +62,19 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     }
 
 
-    public void moveRobotForward(int ticks, double maxSeconds) {
+    public void moveRobotForward(int ticks) {
         if (opModeIsActive()){
             robot.setTargets("Forward", ticks);
             robot.positionRunningMode();
+            }
             robot.powerSet(speed);
+       /* if (moveRobotForward"") {
+            robot.powerSet(speed, speed, speed, speed)
+
+            );*/
 
             while (opModeIsActive() &&
-                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
+                    robot.isWheelsBusy()) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -79,16 +84,16 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.stopAllMotors();
 
         }
-    }
 
-    public void moveRobotBackward(int ticks, double maxSeconds){
+
+    public void moveRobotBackward(int ticks){
         if (opModeIsActive()){
             robot.setTargets("Backward", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
+                    robot.isWheelsBusy()) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -100,7 +105,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
         }
 
     }
-    public void moveRobotLeft(int ticks, double maxSeconds) {
+    public void moveRobotLeft(int ticks) {
 
         if (opModeIsActive()){
             robot.setTargets("Left", ticks);
@@ -108,7 +113,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
+                    robot.isWheelsBusy()) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -120,7 +125,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
         }
     }
 
-    public void moveRobotRight(int ticks, double maxSeconds) {
+    public void moveRobotRight(int ticks) {
 
         if (opModeIsActive()) {
             robot.setTargets("Right", ticks);
@@ -128,7 +133,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.powerSet(speed);
 
             while (opModeIsActive() &&
-                    robot.isWheelsBusy() && getRuntime() < maxSeconds) {
+                    robot.isWheelsBusy()) {
                 robot.tellMotorOutput();
                 //nothings here
             }
@@ -139,6 +144,27 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
         }
     }
+
+    public void turnRobotRight(int ticks) {
+
+        if (opModeIsActive()) {
+            robot.setTargets("Right", ticks);
+            robot.positionRunningMode();
+            robot.powerSet(speed);
+
+            while (opModeIsActive() &&
+                    robot.isWheelsBusy()) {
+                robot.tellMotorOutput();
+                //nothings here
+            }
+
+            robot.stopAllMotors();
+            robot.encoderRunningMode();
+
+
+        }
+    }
+
 
     public void turnDuckSpinner(double maxSeconds){
         robot.duckSpinner.setPower(0.65);
@@ -148,6 +174,25 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             //nothings here
         }
 
+        robot.stopAllMotors();
+
+    }
+
+    public void ramThisMachine(int ticks) {
+        if (opModeIsActive()){
+            robot.setTargets("Forward", ticks);
+            robot.positionRunningMode();
+        }
+        robot.powerSet(1);
+
+        while (opModeIsActive() &&
+                robot.isWheelsBusy()) {
+            robot.tellMotorOutput();
+            //nothings here
+        }
+
+        robot.stopAllMotors();
+        robot.encoderRunningMode();
         robot.stopAllMotors();
 
     }

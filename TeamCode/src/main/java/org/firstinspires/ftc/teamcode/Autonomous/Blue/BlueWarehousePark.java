@@ -5,16 +5,14 @@ package org.firstinspires.ftc.teamcode.Autonomous.Blue;
 
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
         import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+        import com.qualcomm.robotcore.hardware.DcMotor;
 
         import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
         import org.firstinspires.ftc.teamcode.Robot;
 
 @Autonomous(group = "Blue", name = "Blue Warehouse Park")
-@Disabled
-public class BlueSpinWarehousePark extends AutonomousPLUS {
 
-    Robot robot = new Robot();
-
+public class BlueWarehousePark extends AutonomousPLUS {
 
     @Override
     public void runOpMode() {
@@ -23,12 +21,13 @@ public class BlueSpinWarehousePark extends AutonomousPLUS {
 
         //Do this to pass inspection.
         waitForStart();
+        robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
+        robot.clawArm.setPower(0.4);
+        sleep(1000);
 
-        //todo: Test Pseudo Code
-        moveRobotRight(50, 2);
-        turnDuckSpinner(2);
-        moveRobotForward(25, 1);
-        robot.stopAllMotors();
+        moveRobotLeft(2000);
+        sleep(300);
+        robot.encoderReset();
     }
 
 }
