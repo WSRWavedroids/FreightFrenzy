@@ -184,7 +184,7 @@ public class Robot {
     public double inchesToTicks(double inches){
         // returns the inches * ticks per rotation / wheel circ
         return ((inches/12.25) * 537.6 / .5);
-        //todo At 0.5 speed, 1500 ticks = 32 inches
+        //todo Reference that 1 inch ~= 50 ticks
     }
 
     }
