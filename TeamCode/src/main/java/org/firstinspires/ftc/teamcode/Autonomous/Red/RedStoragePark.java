@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 import org.firstinspires.ftc.teamcode.Robot;
 
-@Autonomous(group = "Red", name = "Red Park")
+@Autonomous(group = "Red", name = "Red Storage Park")
     public class RedStoragePark extends AutonomousPLUS {
 
 
@@ -16,19 +16,19 @@ import org.firstinspires.ftc.teamcode.Robot;
             //Do this to pass inspection.
             waitForStart();
 
-            moveRobotForward(300);
+            moveRobotForward(250);
             sleep(300);
             robot.encoderReset();
 
-            moveRobotLeft(1200);
+            moveRobotLeft(1350);
             sleep(1000);
             robot.encoderReset();
 
-            turnDuckSpinner(5);
+            turnDuckSpinnerRed(5);
             sleep(5000);
             robot.encoderReset();
 
-            moveRobotForward(1000);
+            moveRobotForward(950);
             sleep(300);
             robot.encoderReset();
 

@@ -166,8 +166,20 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     }
 
 
-    public void turnDuckSpinner(double maxSeconds){
+    public void turnDuckSpinnerBlue(double maxSeconds){
         robot.duckSpinner.setPower(0.65);
+
+        while (opModeIsActive() && getRuntime() < maxSeconds) {
+            robot.tellMotorOutput();
+            //nothings here
+        }
+
+        robot.stopAllMotors();
+
+    }
+
+    public void turnDuckSpinnerRed(double maxSeconds){
+        robot.duckSpinner.setPower(-0.65);
 
         while (opModeIsActive() && getRuntime() < maxSeconds) {
             robot.tellMotorOutput();

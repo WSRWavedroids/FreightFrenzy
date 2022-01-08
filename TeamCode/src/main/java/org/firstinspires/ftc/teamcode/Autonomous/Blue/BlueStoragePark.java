@@ -25,7 +25,7 @@ public class BlueStoragePark extends AutonomousPLUS {
         sleep(1000);
         robot.encoderReset();
 
-        turnDuckSpinner(5);
+        turnDuckSpinnerBlue(5);
         sleep(5000);
         robot.encoderReset();
 

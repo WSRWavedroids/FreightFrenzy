@@ -31,7 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -53,7 +52,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Lean Mean TeleOp Machine", group="Iterative Opmode")
-public class Lean_Mean_Teleop_Machine extends OpMode {
+public class Lean_Mean_Teleop_Machine_Single_Controller extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
@@ -133,12 +132,12 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         }
 
 
-        // This section checks if the A or B buttons on the second controller are being presses and moves the claw.
+        // This section checks if the X or B buttons are being pressed and moves the claw.
 
         telemetry.addData("ServoPort", "Port: " + robot.claw.getPortNumber());
-        if (this.gamepad2.a) {
+        if (this.gamepad1.x) {
             robot.openAndCloseClaw(0);
-        } else if (this.gamepad2.b) {
+        } else if (this.gamepad1.b) {
             robot.openAndCloseClaw(.4);
         }
 
@@ -151,22 +150,16 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         }
 
 
-        // This section finds the position of the left joystick on the second controller and moves the arm.
+        // This section checks which buttons on the dpad are being pressed and moves the arm accordingly.
 
-        if (this.gamepad2.left_stick_y > 0.5) {
+        if (this.gamepad1.dpad_down) {
 
             // This lowers the arm.
             robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
-
-            if (this.gamepad2.left_bumper) {
-                robot.clawArm.setPower(0.8);
-            } else {
-                robot.clawArm.setPower(0.25);
-            }
-
+            robot.clawArm.setPower(0.8);
             telemetry.addData("Arm", "Lowering Arm");
 
-        } else if (this.gamepad2.left_stick_y < -0.5) {
+        } else if (this.gamepad1.dpad_up) {
 
             // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
             robot.clawArm.setDirection(DcMotor.Direction.REVERSE);

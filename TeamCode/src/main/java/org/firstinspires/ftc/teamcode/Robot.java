@@ -155,6 +155,9 @@ public class Robot {
 
     }
 
+    public void openAndCloseClaw (double position){
+        claw.getController().setServoPosition(claw.getPortNumber(), position);
+    }
 
     public void encoderRunningMode(){
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
