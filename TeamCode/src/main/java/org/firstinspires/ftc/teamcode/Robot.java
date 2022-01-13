@@ -156,6 +156,7 @@ public class Robot {
     }
 
     public void openAndCloseClaw (double position){
+        telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
         claw.getController().setServoPosition(claw.getPortNumber(), position);
     }
 

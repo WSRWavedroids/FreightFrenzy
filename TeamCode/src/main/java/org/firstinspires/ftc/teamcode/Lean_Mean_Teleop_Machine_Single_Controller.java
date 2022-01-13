@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * did a horrible job of doing that.
  */
 
-@TeleOp(name="Lean Mean TeleOp Machine", group="Iterative Opmode")
+@TeleOp(name="Lean Mean TeleOp Machine (Single Controller)", group="Iterative Opmode")
 public class Lean_Mean_Teleop_Machine_Single_Controller extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.

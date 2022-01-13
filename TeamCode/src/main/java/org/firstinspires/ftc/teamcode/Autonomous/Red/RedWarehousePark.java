@@ -1,15 +1,16 @@
+
+
+
 package org.firstinspires.ftc.teamcode.Autonomous.Red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
-import org.firstinspires.ftc.teamcode.Robot;
 
 @Autonomous(group = "Red", name = "Red Warehouse Park")
-public class RedWarehousePark extends AutonomousPLUS {
 
+public class RedWarehousePark extends AutonomousPLUS {
 
     @Override
     public void runOpMode() {
@@ -18,7 +19,6 @@ public class RedWarehousePark extends AutonomousPLUS {
 
         //Do this to pass inspection.
         waitForStart();
-
         robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
         robot.clawArm.setPower(0.4);
         sleep(1000);

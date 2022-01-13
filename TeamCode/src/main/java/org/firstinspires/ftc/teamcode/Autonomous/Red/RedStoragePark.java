@@ -32,8 +32,8 @@ import org.firstinspires.ftc.teamcode.Robot;
             sleep(300);
             robot.encoderReset();
 
-            moveRobotLeft(400);
-            sleep(300);
+            moveRobotLeft(200);
+            sleep(200);
             robot.encoderReset();
 
         }

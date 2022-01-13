@@ -33,8 +33,8 @@ public class BlueStoragePark extends AutonomousPLUS {
         sleep(300);
         robot.encoderReset();
 
-        moveRobotBackward(400);
-        sleep(300);
+        moveRobotBackward(200);
+        sleep(200);
         robot.encoderReset();
 
 //        robot.stopAllMotors();

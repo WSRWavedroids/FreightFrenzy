@@ -1,13 +1,12 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Blue;
+package org.firstinspires.ftc.teamcode.Autonomous.Red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
-import org.firstinspires.ftc.teamcode.Robot;
 
-@Autonomous(group = "Blue", name = "Blue Deliver To Shipping Hub")
-public class BlueDeliverToShippingHub extends AutonomousPLUS {
+@Autonomous(group = "Red", name = "Red Deliver To Shipping Hub")
+public class RedDeliverToShippingHub extends AutonomousPLUS {
 
     @Override
     public void runOpMode() {
@@ -15,6 +14,8 @@ public class BlueDeliverToShippingHub extends AutonomousPLUS {
         super.runOpMode();
 
         //Do this to pass inspection.
+        waitForStart();
+
         waitForStart();
 
         robot.openAndCloseClaw(0);
@@ -42,14 +43,15 @@ public class BlueDeliverToShippingHub extends AutonomousPLUS {
         sleep(1000);
 
         moveRobotBackward(600);
-        sleep(400);
+        sleep(700);
         robot.encoderReset();
 
-        moveRobotLeft(3000);
+        moveRobotRight(3000);
         sleep(500);
 
         robot.encoderReset();
 
-        }
+
+    }
 
     }

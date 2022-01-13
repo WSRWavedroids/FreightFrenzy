@@ -178,6 +178,14 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     }
 
+    public void openClaw(double position){
+        robot.claw.getController().setServoPosition(robot.claw.getPortNumber(), position);
+    }
+
+    public void closeClaw(double position){
+        robot.claw.getController().setServoPosition(robot.claw.getPortNumber(), position);
+    }
+
     public void turnDuckSpinnerRed(double maxSeconds){
         robot.duckSpinner.setPower(-0.65);
 
