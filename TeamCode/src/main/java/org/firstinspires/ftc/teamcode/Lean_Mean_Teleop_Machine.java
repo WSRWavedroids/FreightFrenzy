@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -156,28 +157,20 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         if (this.gamepad2.left_stick_y > 0.5) {
 
             // This lowers the arm.
-            robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
-
-            if (this.gamepad2.left_bumper) {
-                robot.clawArm.setPower(0.8);
-            } else {
-                robot.clawArm.setPower(0.25);
-            }
+            robot.moveArm("Down", 0.3);
 
             telemetry.addData("Arm", "Lowering Arm");
 
         } else if (this.gamepad2.left_stick_y < -0.5) {
 
             // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
-            robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
-            robot.clawArm.setPower(0.8);
+            robot.moveArm("Up", 0.8);
             telemetry.addData("Arm", "Raising Arm");
 
         } else {
 
             // This keeps the arm held at whatever position it is currently at when not moving it with the joysticks.
-            robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
-            robot.clawArm.setPower(0.1);
+            robot.holdArm();
 
         }
 

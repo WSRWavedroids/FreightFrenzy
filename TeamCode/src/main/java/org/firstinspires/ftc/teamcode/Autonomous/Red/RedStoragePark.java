@@ -17,24 +17,19 @@ import org.firstinspires.ftc.teamcode.Robot;
             waitForStart();
 
             moveRobotForward(250);
-            sleep(300);
-            robot.encoderReset();
+            prepareNextAction(300);
 
             moveRobotLeft(1350);
-            sleep(1000);
-            robot.encoderReset();
+            prepareNextAction(1000);
 
             turnDuckSpinnerRed(5);
-            sleep(5000);
-            robot.encoderReset();
+            prepareNextAction(5000);
 
             moveRobotForward(950);
-            sleep(300);
-            robot.encoderReset();
+            prepareNextAction(300);
 
             moveRobotLeft(200);
-            sleep(200);
-            robot.encoderReset();
+            prepareNextAction(200);
 
         }
     }

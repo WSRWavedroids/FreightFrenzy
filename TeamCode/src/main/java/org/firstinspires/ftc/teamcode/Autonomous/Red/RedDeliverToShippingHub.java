@@ -16,40 +16,29 @@ public class RedDeliverToShippingHub extends AutonomousPLUS {
         //Do this to pass inspection.
         waitForStart();
 
-        waitForStart();
-
         robot.openAndCloseClaw(0);
-        sleep(500);
-        robot.encoderReset();
+        prepareNextAction(500);
 
-        robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
-        robot.clawArm.setPower(0.45);
-        sleep(300);
+        robot.moveArm("Up", 0.45);
+        prepareNextAction(300);
 
         moveRobotForward(600);
-        sleep(400);
-        robot.encoderReset();
+        prepareNextAction(400);
 
-        robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
-        robot.clawArm.setPower(0.4);
-        sleep(1500);
+        robot.moveArm("Down", 0.4);
+        prepareNextAction(300);
 
         robot.openAndCloseClaw(0.4);
-        sleep(500);
-        robot.encoderReset();
+        prepareNextAction(300);
 
-        robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
-        robot.clawArm.setPower(0.5);
-        sleep(1000);
+        robot.moveArm("Up", 0.5);
+        prepareNextAction(1000);
 
         moveRobotBackward(600);
-        sleep(700);
-        robot.encoderReset();
+        prepareNextAction(700);
 
         moveRobotRight(3000);
-        sleep(500);
-
-        robot.encoderReset();
+        prepareNextAction(600);
 
 
     }

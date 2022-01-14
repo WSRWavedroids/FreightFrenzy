@@ -158,6 +158,12 @@ public class Robot {
     public void openAndCloseClaw (double position){
         telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
         claw.getController().setServoPosition(claw.getPortNumber(), position);
+
+        if (position == 0){
+            telemetry.addData("Claw", "Closed");
+        } else if (position >= 0.3){
+            telemetry.addData("Claw", "Open");
+        }
     }
 
     public void encoderRunningMode(){
@@ -190,5 +196,20 @@ public class Robot {
         return ((inches/12.25) * 537.6 / .5);
         //todo Reference that 1 inch ~= 50 ticks
     }
+
+    public void moveArm(String direction, double power){
+        if (direction == "Up"){
+            clawArm.setDirection(DcMotor.Direction.REVERSE);
+        } else if (direction == "Down"){
+            clawArm.setDirection(DcMotor.Direction.FORWARD);
+        }
+        clawArm.setPower(power);
+    }
+
+    public void holdArm(){
+        clawArm.setDirection(DcMotor.Direction.REVERSE);
+        clawArm.setPower(0.1);
+    }
+
 
     }

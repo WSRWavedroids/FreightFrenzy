@@ -21,13 +21,11 @@ public class BlueWarehousePark extends AutonomousPLUS {
 
         //Do this to pass inspection.
         waitForStart();
-        robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
-        robot.clawArm.setPower(0.4);
-        sleep(1000);
+        robot.moveArm("Up", 0.4);
+        prepareNextAction(500);
 
         moveRobotLeft(2000);
-        sleep(300);
-        robot.encoderReset();
+        prepareNextAction(1000);
     }
 
 }

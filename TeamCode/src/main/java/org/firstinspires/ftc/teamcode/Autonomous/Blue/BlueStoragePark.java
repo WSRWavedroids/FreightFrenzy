@@ -18,24 +18,19 @@ public class BlueStoragePark extends AutonomousPLUS {
         waitForStart();
 
         moveRobotRight(300);
-        sleep(300);
-        robot.encoderReset();
+        prepareNextAction(300);
 
         moveRobotBackward(1200);
-        sleep(1000);
-        robot.encoderReset();
+        prepareNextAction(1000);
 
         turnDuckSpinnerBlue(5);
-        sleep(5000);
-        robot.encoderReset();
+        prepareNextAction(5000);
 
         moveRobotRight(1000);
-        sleep(300);
-        robot.encoderReset();
+        prepareNextAction(300);
 
         moveRobotBackward(200);
-        sleep(200);
-        robot.encoderReset();
+        prepareNextAction(200);
 
 //        robot.stopAllMotors();
 

@@ -178,14 +178,6 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     }
 
-    public void openClaw(double position){
-        robot.claw.getController().setServoPosition(robot.claw.getPortNumber(), position);
-    }
-
-    public void closeClaw(double position){
-        robot.claw.getController().setServoPosition(robot.claw.getPortNumber(), position);
-    }
-
     public void turnDuckSpinnerRed(double maxSeconds){
         robot.duckSpinner.setPower(-0.65);
 
@@ -198,23 +190,19 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     }
 
-    public void ramThisMachine(int ticks) {
-        if (opModeIsActive()){
-            robot.setTargets("Forward", ticks);
-            robot.positionRunningMode();
+    public void prepareNextAction(long pause){
+        sleep(pause);
+        robot.encoderReset();
+    }
+
+    public void moveArm(String direction, double power){
+        if (direction == "Up"){
+            robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
+        } else if (direction == "Down"){
+            robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
         }
-        robot.powerSet(1);
 
-        while (opModeIsActive() &&
-                robot.isWheelsBusy()) {
-            robot.tellMotorOutput();
-            //nothings here
-        }
-
-        robot.stopAllMotors();
-        robot.encoderRunningMode();
-        robot.stopAllMotors();
-
+        robot.clawArm.setPower(power);
     }
 
 }
