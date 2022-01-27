@@ -43,6 +43,7 @@ import org.firstinspires.ftc.teamcode.Robot;
  *
  */
 
+//todo Create function to convert tick values based on speed.
 public abstract class AutonomousPLUS extends LinearOpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
@@ -188,6 +189,17 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
         robot.stopAllMotors();
 
+    }
+
+    public void stopDuckSpinner(double maxSeconds){
+        robot.duckSpinner.setPower(0);
+
+        while (opModeIsActive() && getRuntime() < maxSeconds) {
+            robot.tellMotorOutput();
+            //nothings here
+        }
+
+        robot.stopAllMotors();
     }
 
     public void prepareNextAction(long pause){

@@ -88,6 +88,7 @@ public class Robot {
     }
     public void stopDuckSpinner(){
         duckSpinner.setPower(0);
+        telemetry.addData("Ducks", "Whee!");
     }
 
     public void stopAllMotors() {

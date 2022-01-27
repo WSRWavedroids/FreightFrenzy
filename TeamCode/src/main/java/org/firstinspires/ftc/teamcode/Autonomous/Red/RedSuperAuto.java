@@ -25,7 +25,7 @@ public class RedSuperAuto extends AutonomousPLUS {
         robot.moveArm("Up", 0.5);
         sleep(1000);
 
-        moveRobotForward(650);
+        moveRobotForward(1050);
         prepareNextAction(300);
 
 
@@ -38,10 +38,10 @@ public class RedSuperAuto extends AutonomousPLUS {
         robot.moveArm("Up", 0.5);
         sleep(1000);
 
-        moveRobotLeft(2550);
+        moveRobotLeft(2450);
         prepareNextAction(1000);
 
-        moveRobotBackward(150);
+        moveRobotBackward(650);
         prepareNextAction(500);
 
         turnDuckSpinnerRed(6);

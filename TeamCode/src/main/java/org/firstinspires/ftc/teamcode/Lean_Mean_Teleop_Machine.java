@@ -103,20 +103,28 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         robot.tellMotorOutput();
 
 
-        // This section checks what bumpers/triggers are being pressed and changes the speed accordingly.
-        if (this.gamepad1.right_trigger > 0.5) {
-            telemetry.addData("Speed", "Fast Boi");
-            speed = 1.0;
-        } else if (this.gamepad1.left_trigger > 0.5) {
-            telemetry.addData("Speed", "Slow Boi");
-            speed = 0.5;
-        } else if (this.gamepad1.right_bumper) {
-            telemetry.addData("Speed", "Super Slow Boi");
+        // This section checks what buttons on the Dpad are being pressed and changes the speed accordingly.
+
+        if (gamepad1.dpad_up){
+            speed = 1;
+        } else if (gamepad1.dpad_down){
             speed = 0.25;
-        } else if (this.gamepad1.left_bumper) {
-            telemetry.addData("Speed", "Normal Boi");
+        } else if (gamepad1.dpad_left){
+            speed = 0.5;
+        } else if (gamepad1.dpad_right){
             speed = 0.75;
         }
+
+        if (speed == 1) {
+            telemetry.addData("Speed", "Fast Boi");
+        } else if (speed == 0.5) {
+            telemetry.addData("Speed", "Slow Boi");
+        } else if (speed == 0.25) {
+            telemetry.addData("Speed", "Super Slow Boi");
+        } else if (speed == 0.75) {
+            telemetry.addData("Speed", "Normal Boi");
+        }
+
 
 
         // This section checks if the Y or A buttons on the first controller are being pressed and moves the duck spinner.
@@ -157,14 +165,14 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         if (this.gamepad2.left_stick_y > 0.5) {
 
             // This lowers the arm.
-            robot.moveArm("Down", 0.3);
+            robot.moveArm("Down", 0.2);
 
             telemetry.addData("Arm", "Lowering Arm");
 
         } else if (this.gamepad2.left_stick_y < -0.5) {
 
             // Contrary to what you might think, because of the positioning of the motor, this actually raises the arm up.
-            robot.moveArm("Up", 0.8);
+            robot.moveArm("Up", 0.65);
             telemetry.addData("Arm", "Raising Arm");
 
         } else {
