@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -50,7 +50,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
    * the following 4 detectable objects
@@ -84,7 +83,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+            "AW+yC/j/////AAABmdOpWX6UmUWSmUhIgrJZx/JJPDIm3cFRH0uz8n8LjoVItJwRTPaZ5H2jhRvgF+6knZnrju6ecCFO3PB/6M0GahuCEwW9yT27ZERGtfTtiFT8/rydF0sd77j18D4ObUdZKKvFZ2I/sebgj7oU7+IHKKv6OfH88gg01WvoQRAQD+QqgdLTkEnbX1CfHOqhi+GxsncM+HzCcdwt5OYoLoQLxgsnHhLwJ3AFTOU4v+sdEHUh4utv9pVHkNgnNueFsEeYuWe/4xKgwFqSHOrZ649ZC63k+5wMrmf4OrCiL0poOmRrvaE/SkbWIZYyWR6KxdjdmCI58nh+pWCK1reICKTOEkFe+Lz8fcrllxNIAtDkMr3V";
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia

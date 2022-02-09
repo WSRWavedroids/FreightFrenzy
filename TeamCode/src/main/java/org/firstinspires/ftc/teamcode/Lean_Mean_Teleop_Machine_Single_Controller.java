@@ -121,11 +121,11 @@ public class Lean_Mean_Teleop_Machine_Single_Controller extends OpMode {
 
         if (this.gamepad1.y) {
             telemetry.addData("Duck Spinner", "Clockwise Spin");
-            robot.turnDuckSpinner(0.65);
+            robot.turnDuckSpinnerTeleOp(0.65);
 
         } else if (this.gamepad1.a) {
             telemetry.addData("Duck Spinner", "Counterclockwise Spin");
-            robot.turnDuckSpinner(-0.65);
+            robot.turnDuckSpinnerTeleOp(-0.65);
         } else {
             telemetry.addData("Duck Spinner", "Not running");
             robot.stopDuckSpinner();

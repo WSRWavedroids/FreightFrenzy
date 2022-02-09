@@ -1,0 +1,68 @@
+package org.firstinspires.ftc.teamcode.Autonomous.Blue;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
+import org.firstinspires.ftc.teamcode.Autonomous.DetectionCalculation;
+import org.firstinspires.ftc.teamcode.Autonomous.ObjectDetectorThingy;
+import org.firstinspires.ftc.teamcode.Robot;
+
+@Autonomous(group = "Blue", name = "Blue Object Detection")
+public class BlueObjDetect extends AutonomousPLUS {
+
+    @Override
+    public void runOpMode() {
+
+
+        super.runOpMode();
+
+        //Do this to pass inspection.
+        waitForStart();
+
+        ObjectDetectorThingy objectDetectorThingy = null;
+        DetectionCalculation.CapstonePosition name = objectDetectorThingy.getPosition();
+
+        robot.openAndCloseClaw(0);
+        prepareNextAction(500);
+
+        if (name == DetectionCalculation.CapstonePosition.LEFT) {
+            moveArmAuto("Up", 0.8, 100);
+            robot.holdArm("Auto");
+        } else if (name == DetectionCalculation.CapstonePosition.MIDDLE){
+            moveArmAuto("Up", 0.8, 300);
+            robot.holdArm("Auto");
+        } else if (name == DetectionCalculation.CapstonePosition.RIGHT){
+            moveArmAuto("Up", 0.8, 500);
+            robot.holdArm("Auto");
+        }
+
+        //moveArmAuto("Up", 0.8, 500);
+        //robot.holdArm("Auto");
+        //robot.encoderReset();
+
+       /* moveRobotForward(1150);
+        prepareNextAction(400);
+
+
+
+        moveArmAuto("Down", 0.3, 350);
+        robot.encoderReset();
+
+        robot.openAndCloseClaw(0.4);
+        prepareNextAction(200);
+
+        moveArmAuto("Up", 0.8, 500);
+        //robot.holdArm("Auto");
+        robot.encoderReset();
+
+        moveRobotBackward(1200);
+        prepareNextAction(400);
+
+        moveRobotLeft(3000);
+        prepareNextAction(500);
+
+        */
+
+        }
+
+    }

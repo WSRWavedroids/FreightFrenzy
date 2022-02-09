@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.Autonomous.DetectionCalculation;
 
 
 /**
@@ -50,9 +51,11 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     public double speed = 0.5;
+    public String level;
 
     //DO NOT DELETE THIS LINE! CAPITALIZATION IS VERY IMPORTANT!!!
     public Robot robot = new Robot();
+    ObjectDetectorThingy objectDetectorThingy = null;
 
     @Override
     public void runOpMode() {
@@ -65,14 +68,11 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     public void moveRobotForward(int ticks) {
         if (opModeIsActive()){
+            //ticks = (int) (ticks * robot.multi);
             robot.setTargets("Forward", ticks);
             robot.positionRunningMode();
             }
             robot.powerSet(speed);
-       /* if (moveRobotForward"") {
-            robot.powerSet(speed, speed, speed, speed)
-
-            );*/
 
             while (opModeIsActive() &&
                     robot.isWheelsBusy()) {
@@ -89,6 +89,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     public void moveRobotBackward(int ticks){
         if (opModeIsActive()){
+            //ticks = (int) (ticks * robot.multi);
             robot.setTargets("Backward", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
@@ -109,6 +110,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     public void moveRobotLeft(int ticks) {
 
         if (opModeIsActive()){
+            //ticks = (int) (ticks * robot.multi);
             robot.setTargets("Left", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
@@ -129,6 +131,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
     public void moveRobotRight(int ticks) {
 
         if (opModeIsActive()) {
+            //ticks = (int) (ticks * robot.multi);
             robot.setTargets("Right", ticks);
             robot.positionRunningMode();
             robot.powerSet(speed);
@@ -191,30 +194,46 @@ public abstract class AutonomousPLUS extends LinearOpMode {
 
     }
 
-    public void stopDuckSpinner(double maxSeconds){
-        robot.duckSpinner.setPower(0);
-
-        while (opModeIsActive() && getRuntime() < maxSeconds) {
-            robot.tellMotorOutput();
-            //nothings here
-        }
-
-        robot.stopAllMotors();
-    }
-
     public void prepareNextAction(long pause){
         sleep(pause);
         robot.encoderReset();
     }
 
-    public void moveArm(String direction, double power){
-        if (direction == "Up"){
-            robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
-        } else if (direction == "Down"){
-            robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
-        }
+    public void moveArmAuto(String direction, double power, int ticks) {
+        if (opModeIsActive()) {
 
-        robot.clawArm.setPower(power);
+            if (direction == "Up") {
+                robot.clawArm.setDirection(DcMotor.Direction.REVERSE);
+                robot.clawArm.setTargetPosition(robot.clawArm.getCurrentPosition() + ticks);
+            } else if (direction == "Down") {
+                robot.clawArm.setDirection(DcMotor.Direction.FORWARD);
+                robot.clawArm.setTargetPosition(robot.clawArm.getCurrentPosition() + ticks);
+            }
+
+            robot.clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.clawArm.setPower(power);
+
+            while (opModeIsActive() &&
+                    (robot.clawArm.getTargetPosition() != robot.clawArm.getCurrentPosition())) {
+                robot.tellMotorOutput();
+                //nothings here
+            }
+
+            robot.clawArm.setPower(0);
+            robot.clawArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
+
+   /* public void findTargetLevel() {
+        if (objectDetectorThingy.getPosition() == DetectionCalculation.CapstonePosition.LEFT) {
+            level = "Bottom";
+        } else if (objectDetectorThingy.getPosition() == DetectionCalculation.CapstonePosition.MIDDLE){
+            level = "Middle";
+        } else if (objectDetectorThingy.getPosition() == DetectionCalculation.CapstonePosition.RIGHT){
+            level = "Top";
+        }
+    }
+
+    */
 
 }

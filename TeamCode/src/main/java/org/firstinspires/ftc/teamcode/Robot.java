@@ -22,6 +22,7 @@ public class Robot {
     //init and declare war
     public OpMode opmode;
     public HardwareMap hardwareMap;
+    public double multi;
 
     //construct robot
     public Robot() {
@@ -82,10 +83,11 @@ public class Robot {
     }
 
 
-    public void turnDuckSpinner(double power){
+    public void turnDuckSpinnerTeleOp(double power){
         duckSpinner.setPower(power);
         telemetry.addData("Ducks", "Whee!");
     }
+
     public void stopDuckSpinner(){
         duckSpinner.setPower(0);
         telemetry.addData("Ducks", "Whee!");
@@ -180,6 +182,7 @@ public class Robot {
          frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
          backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
          backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+         clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
      }
 
      public void tellMotorOutput(){
@@ -188,7 +191,7 @@ public class Robot {
             telemetry.addData("Motors", String.format("BL Power(%.2f) BL Location (%d) BL Target (%d)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition(), backLeftDrive.getTargetPosition()));
             telemetry.addData("Motors", String.format("BR Power(%.2f) BR Location (%d) BR Target (%d)", backRightDrive.getPower(), backRightDrive.getCurrentPosition(), backRightDrive.getTargetPosition()));
             telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
-            telemetry.addData("Motors", "Arm (%.2f)", clawArm.getPower());
+            telemetry.addData("Motors", String.format("Arm Power(%.2f) Arm Location (%d) Arm Target (%d)", clawArm.getPower(), clawArm.getCurrentPosition(), clawArm.getTargetPosition()));
             telemetry.update();
      }
 
@@ -207,10 +210,20 @@ public class Robot {
         clawArm.setPower(power);
     }
 
-    public void holdArm(){
+    public void holdArm(String mode){
         clawArm.setDirection(DcMotor.Direction.REVERSE);
-        clawArm.setPower(0.1);
+        if (mode == "Auto"){
+            clawArm.setPower(0.05);
+        } else if (mode == "Tele"){
+            clawArm.setPower(0.1);
+        }
     }
 
-
+    public void findSpeedMultiplier(int ticks, double power){
+        if (power == 0.5){
+            multi = 1;
+        } else if (power == 0.6){
+            multi = 0.8;
+        }
+    }
     }
