@@ -33,9 +33,9 @@ public class BlueDeliverToShippingHub extends AutonomousPLUS {
         robot.openAndCloseClaw(0.4);
         prepareNextAction(200);
 
-        moveArmAuto("Up", 0.8, 500);
-        //robot.holdArm("Auto");
-        robot.encoderReset();
+        moveArmAuto("Up", 0.8, 300);
+        robot.holdArm("Auto");
+        //robot.encoderReset();
 
         moveRobotBackward(1200);
         prepareNextAction(400);

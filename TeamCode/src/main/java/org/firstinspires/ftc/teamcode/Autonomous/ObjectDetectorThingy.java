@@ -22,6 +22,9 @@ public class ObjectDetectorThingy {
         webcam.setPipeline(pipeline);
     }
 
+    public void setMaxFrameSize(int maxWidth, int maxHeight) {
+    }
+
     public void start() {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {

@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Blue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 import org.firstinspires.ftc.teamcode.Autonomous.DetectionCalculation;
 import org.firstinspires.ftc.teamcode.Autonomous.ObjectDetectorThingy;
 import org.firstinspires.ftc.teamcode.Robot;
+
+import java.io.ObjectStreamException;
 
 @Autonomous(group = "Blue", name = "Blue Object Detection")
 public class BlueObjDetect extends AutonomousPLUS {
@@ -19,7 +22,7 @@ public class BlueObjDetect extends AutonomousPLUS {
         //Do this to pass inspection.
         waitForStart();
 
-        ObjectDetectorThingy objectDetectorThingy = null;
+        ObjectDetectorThingy objectDetectorThingy = new ObjectDetectorThingy(hardwareMap);
         DetectionCalculation.CapstonePosition name = objectDetectorThingy.getPosition();
 
         robot.openAndCloseClaw(0);
@@ -29,12 +32,16 @@ public class BlueObjDetect extends AutonomousPLUS {
             moveArmAuto("Up", 0.8, 100);
             robot.holdArm("Auto");
         } else if (name == DetectionCalculation.CapstonePosition.MIDDLE){
-            moveArmAuto("Up", 0.8, 300);
+            moveArmAuto("Up", 0.5, 300);
             robot.holdArm("Auto");
         } else if (name == DetectionCalculation.CapstonePosition.RIGHT){
-            moveArmAuto("Up", 0.8, 500);
+            moveArmAuto("Up", 0, 500);
             robot.holdArm("Auto");
         }
+
+        moveRobotForward(1150);
+        prepareNextAction(400);
+
 
         //moveArmAuto("Up", 0.8, 500);
         //robot.holdArm("Auto");
