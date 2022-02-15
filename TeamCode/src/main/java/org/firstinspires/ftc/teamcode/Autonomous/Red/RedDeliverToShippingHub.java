@@ -17,25 +17,25 @@ public class RedDeliverToShippingHub extends AutonomousPLUS {
         waitForStart();
 
         robot.openAndCloseClaw(0);
-        prepareNextAction(500);
+        prepareNextAction(200);
 
-        moveArmAuto("Up", 0.8, 600);
+        moveArmAuto("Up", 0.8, 500);
         robot.holdArm("Auto");
         //robot.encoderReset();
 
-        moveRobotForward(1150);
+        moveRobotForward(1100);
         prepareNextAction(400);
 
-        moveArmAuto("Down", 0.3, 400);
+        moveArmAuto("Down", 0.3, 350);
         // robot.holdArm("Auto");
         robot.encoderReset();
 
         robot.openAndCloseClaw(0.4);
-        prepareNextAction(300);
+        prepareNextAction(200);
 
         moveArmAuto("Up", 0.8, 200);
         robot.holdArm("Auto");
-        robot.encoderReset();
+        //robot.encoderReset();
 
         moveRobotBackward(1225);
         prepareNextAction(900);

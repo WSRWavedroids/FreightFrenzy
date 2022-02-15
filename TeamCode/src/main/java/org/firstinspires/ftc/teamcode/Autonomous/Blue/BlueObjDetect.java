@@ -23,20 +23,23 @@ public class BlueObjDetect extends AutonomousPLUS {
         waitForStart();
 
         ObjectDetectorThingy objectDetectorThingy = new ObjectDetectorThingy(hardwareMap);
-        DetectionCalculation.CapstonePosition name = objectDetectorThingy.getPosition();
+        DetectionCalculation.CapstonePosition pos = objectDetectorThingy.getPosition();
 
         robot.openAndCloseClaw(0);
         prepareNextAction(500);
 
-        if (name == DetectionCalculation.CapstonePosition.LEFT) {
-            moveArmAuto("Up", 0.8, 100);
-            robot.holdArm("Auto");
-        } else if (name == DetectionCalculation.CapstonePosition.MIDDLE){
-            moveArmAuto("Up", 0.5, 300);
-            robot.holdArm("Auto");
-        } else if (name == DetectionCalculation.CapstonePosition.RIGHT){
-            moveArmAuto("Up", 0, 500);
-            robot.holdArm("Auto");
+        if (pos == DetectionCalculation.CapstonePosition.LEFT) {
+            //moveArmAuto("Up", 0.8, 100);
+            //robot.holdArm("Auto");
+            moveRobotLeft(200);
+        } else if (pos == DetectionCalculation.CapstonePosition.MIDDLE){
+            //moveArmAuto("Up", 0.5, 300);
+            //robot.holdArm("Auto");
+            moveRobotForward(200);
+        } else if (pos == DetectionCalculation.CapstonePosition.RIGHT){
+            //moveArmAuto("Up", 0, 500);
+            //robot.holdArm("Auto");
+            moveRobotRight(200);
         }
 
         moveRobotForward(1150);

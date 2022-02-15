@@ -73,6 +73,12 @@ public class Robot {
     }
 
 
+    /*
+        ***************************************************************************************
+        ***************************** DRIVETRAIN FUNCTIONS ************************************
+        ***************************************************************************************
+     */
+
     public boolean isWheelsBusy(){
         if(backLeftDrive.isBusy() || frontLeftDrive.isBusy() || frontRightDrive.isBusy() || backRightDrive.isBusy()){
             return true;
@@ -81,7 +87,6 @@ public class Robot {
             return false;
         }
     }
-
 
     public void turnDuckSpinnerTeleOp(double power){
         duckSpinner.setPower(power);
@@ -99,6 +104,20 @@ public class Robot {
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
     }
+
+    public void powerSet(double speed) {
+        frontLeftDrive.setPower(speed);
+        frontRightDrive.setPower(speed);
+        backLeftDrive.setPower(speed);
+        backRightDrive.setPower(speed);
+
+    }
+
+    /*
+     ***************************************************************************************
+     ***************************** AUTONOMOUS FUNCTIONS ************************************
+     ***************************************************************************************
+     */
 
      public void setTargets(String direction, int ticks) {
 
@@ -138,24 +157,42 @@ public class Robot {
 
     public void positionRunningMode(){
 
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            }
+    }
 
-    /* lic void powerSet(double frontLeftSpeed, double frontRightSpeed, double backLeftSpeed, double backRightSpeed) {
-            frontLeftDrive.setPower(frontLeftSpeed);
-            frontRightDrive.setPower(frontRightSpeed);
-            backLeftDrive.setPower(backLeftSpeed);
-            backRightDrive.setPower(backRightspeed);*/
-    public void powerSet(double speed) {
-        frontLeftDrive.setPower(speed);
-        frontRightDrive.setPower(speed);
-        backLeftDrive.setPower(speed);
-        backRightDrive.setPower(speed);
+    public void encoderRunningMode(){
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+    }
+
+    public void encoderReset(){
+        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    /*
+     ***************************************************************************************
+     ***************************** ARM AND CLAW FUNCTIONS ************************************
+     ***************************************************************************************
+     */
+
+    public void holdArm(String mode){
+        clawArm.setDirection(DcMotor.Direction.REVERSE);
+        if (mode == "Auto"){
+            clawArm.setPower(0.05);
+        } else if (mode == "Tele"){
+            clawArm.setPower(0.1);
+        }
     }
 
     public void openAndCloseClaw (double position){
@@ -169,38 +206,6 @@ public class Robot {
         }
     }
 
-    public void encoderRunningMode(){
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-     }
-
-     public void encoderReset(){
-         frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-         frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-         backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-         backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-         clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-     }
-
-     public void tellMotorOutput(){
-            telemetry.addData("Motors", String.format("FL Power(%.2f) FL Location (%d) FL Target (%d)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition(), frontLeftDrive.getTargetPosition()));
-            telemetry.addData("Motors", String.format("FR Power(%.2f) FR Location (%d) FR Target (%d)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition(), frontRightDrive.getTargetPosition()));
-            telemetry.addData("Motors", String.format("BL Power(%.2f) BL Location (%d) BL Target (%d)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition(), backLeftDrive.getTargetPosition()));
-            telemetry.addData("Motors", String.format("BR Power(%.2f) BR Location (%d) BR Target (%d)", backRightDrive.getPower(), backRightDrive.getCurrentPosition(), backRightDrive.getTargetPosition()));
-            telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
-            telemetry.addData("Motors", String.format("Arm Power(%.2f) Arm Location (%d) Arm Target (%d)", clawArm.getPower(), clawArm.getCurrentPosition(), clawArm.getTargetPosition()));
-            telemetry.update();
-     }
-
-    public double inchesToTicks(double inches){
-        // returns the inches * ticks per rotation / wheel circ
-        return ((inches/12.25) * 537.6 / .5);
-        //todo Reference that 1 inch ~= 50 ticks
-    }
-
     public void moveArm(String direction, double power){
         if (direction == "Up"){
             clawArm.setDirection(DcMotor.Direction.REVERSE);
@@ -210,14 +215,13 @@ public class Robot {
         clawArm.setPower(power);
     }
 
-    public void holdArm(String mode){
-        clawArm.setDirection(DcMotor.Direction.REVERSE);
-        if (mode == "Auto"){
-            clawArm.setPower(0.05);
-        } else if (mode == "Tele"){
-            clawArm.setPower(0.1);
-        }
-    }
+
+
+    /*
+     ***************************************************************************************
+     ***************************** MISCELLANEOUS FUNCTIONS ************************************
+     ***************************************************************************************
+     */
 
     public void findSpeedMultiplier(int ticks, double power){
         if (power == 0.5){
@@ -225,6 +229,22 @@ public class Robot {
         } else if (power == 0.6){
             multi = 0.8;
         }
+    }
+
+    public void tellMotorOutput(){
+        telemetry.addData("Motors", String.format("FL Power(%.2f) FL Location (%d) FL Target (%d)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition(), frontLeftDrive.getTargetPosition()));
+        telemetry.addData("Motors", String.format("FR Power(%.2f) FR Location (%d) FR Target (%d)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition(), frontRightDrive.getTargetPosition()));
+        telemetry.addData("Motors", String.format("BL Power(%.2f) BL Location (%d) BL Target (%d)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition(), backLeftDrive.getTargetPosition()));
+        telemetry.addData("Motors", String.format("BR Power(%.2f) BR Location (%d) BR Target (%d)", backRightDrive.getPower(), backRightDrive.getCurrentPosition(), backRightDrive.getTargetPosition()));
+        telemetry.addData("Motors", "Duck Spinner (%.2f)", duckSpinner.getPower());
+        telemetry.addData("Motors", String.format("Arm Power(%.2f) Arm Location (%d) Arm Target (%d)", clawArm.getPower(), clawArm.getCurrentPosition(), clawArm.getTargetPosition()));
+        telemetry.update();
+    }
+
+    public double inchesToTicks(double inches){
+        // returns the inches * ticks per rotation / wheel circ
+        return ((inches/12.25) * 537.6 / .5);
+        //todo Reference that 1 inch ~= 50 ticks
     }
 
 

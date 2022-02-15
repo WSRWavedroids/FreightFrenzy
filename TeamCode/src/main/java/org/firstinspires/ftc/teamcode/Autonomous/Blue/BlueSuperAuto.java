@@ -23,7 +23,7 @@ public class BlueSuperAuto extends AutonomousPLUS {
         moveRobotRight(300);
         prepareNextAction(300);
 
-        moveRobotBackward(1175);
+        moveRobotBackward(1250);
         prepareNextAction(1000);
 
         turnDuckSpinnerBlue(3);
@@ -32,36 +32,36 @@ public class BlueSuperAuto extends AutonomousPLUS {
         robot.stopDuckSpinner();
         prepareNextAction(300);
 
-        moveRobotRight(1700);
+        moveRobotRight(1800);
         prepareNextAction(1000);
 
 
         // Robot should now be in storage unit
 
         robot.openAndCloseClaw(0);
-        prepareNextAction(500);
+        prepareNextAction(300);
 
-        moveArmAuto("Up", 0.8, 600);
+        moveArmAuto("Up", 0.7, 550);
         robot.holdArm("Auto");
-        robot.encoderReset();
+        //robot.encoderReset();
 
-        moveRobotForward(1300);
-        prepareNextAction(500);
+        moveRobotForward(1250);
+        prepareNextAction(300);
 
         moveArmAuto("Down", 0.3, 300);
-       // robot.holdArm("Auto");
-        robot.encoderReset();
+        robot.holdArm("Auto");
+        //robot.encoderReset();
 
         robot.openAndCloseClaw(0.4);
         prepareNextAction(300);
 
-        moveArmAuto("Up", 0.8, 500);
+        moveArmAuto("Up", 0.8, 250);
         robot.encoderReset();
 
-        moveRobotBackward(1300);
+        moveRobotBackward(1350);
         prepareNextAction(400);
 
-        moveRobotLeft(650);
+        moveRobotLeft(750);
         prepareNextAction(400);
 
 

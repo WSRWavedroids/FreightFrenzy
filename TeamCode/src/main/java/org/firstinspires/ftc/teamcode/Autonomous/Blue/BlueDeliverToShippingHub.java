@@ -24,7 +24,7 @@ public class BlueDeliverToShippingHub extends AutonomousPLUS {
         robot.holdArm("Auto");
         //robot.encoderReset();
 
-        moveRobotForward(1150);
+        moveRobotForward(1100);
         prepareNextAction(400);
 
         moveArmAuto("Down", 0.3, 350);
@@ -37,7 +37,7 @@ public class BlueDeliverToShippingHub extends AutonomousPLUS {
         robot.holdArm("Auto");
         //robot.encoderReset();
 
-        moveRobotBackward(1200);
+        moveRobotBackward(1150);
         prepareNextAction(400);
 
         moveRobotLeft(3000);

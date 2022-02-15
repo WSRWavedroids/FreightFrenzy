@@ -223,8 +223,7 @@ public abstract class AutonomousPLUS extends LinearOpMode {
             robot.clawArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void setMaxFrameSize(int maxWidth, int maxHeight) {
-    }
+
 
    /* public void findTargetLevel() {
         if (objectDetectorThingy.getPosition() == DetectionCalculation.CapstonePosition.LEFT) {

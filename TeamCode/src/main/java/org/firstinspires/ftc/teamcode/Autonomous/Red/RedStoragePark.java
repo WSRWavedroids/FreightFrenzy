@@ -25,6 +25,9 @@ import org.firstinspires.ftc.teamcode.Robot;
             turnDuckSpinnerRed(5);
             prepareNextAction(5000);
 
+            robot.stopDuckSpinner();
+            prepareNextAction(100);
+
             moveRobotForward(950);
             prepareNextAction(300);
 
