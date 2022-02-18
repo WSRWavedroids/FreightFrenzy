@@ -21,9 +21,6 @@ public class ObjectDetectorThingy {
         webcam.setPipeline(pipeline);
     }
 
-    public void setMaxFrameSize(int maxWidth, int maxHeight) {
-    }
-
     public void start() {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -31,7 +28,7 @@ public class ObjectDetectorThingy {
             public void onOpened()
             {
                 // 1280x720, 960x720
-                // webcam.startStreaming(1280,720, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                webcam.startStreaming(1280,720, OpenCvCameraRotation.SIDEWAYS_LEFT);
                 webcam.startStreaming(960, 720, OpenCvCameraRotation.UPRIGHT);
             }
 

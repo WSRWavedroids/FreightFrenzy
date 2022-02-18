@@ -26,7 +26,7 @@ public class BlueObjDetect extends AutonomousPLUS {
         DetectionCalculation.CapstonePosition pos = objectDetectorThingy.getPosition();
 
         robot.openAndCloseClaw(0);
-        prepareNextAction(500);
+        prepareNextAction(1000);
 
         if (pos == DetectionCalculation.CapstonePosition.LEFT) {
             //moveArmAuto("Up", 0.8, 100);

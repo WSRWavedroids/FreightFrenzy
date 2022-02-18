@@ -17,6 +17,7 @@ public class Robot {
     public DcMotor duckSpinner;
     public DcMotor clawArm;
     public CRServo claw;
+    //public DcMotor elbow;
     public Telemetry telemetry;
 
     //init and declare war
@@ -44,6 +45,8 @@ public class Robot {
         duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
         clawArm = hardwareMap.get(DcMotor.class, "clawArm");
         claw = hardwareMap.get(CRServo.class, "claw");
+        //elbow = hardwareMap.get(CRServo.class, "elbow");
+
 
 
         this.frontLeftDrive = frontLeftDrive;
@@ -53,6 +56,7 @@ public class Robot {
         this.duckSpinner = duckSpinner;
         this.clawArm = clawArm;
         this.claw = claw;
+        //this.elbow = elbow;
 
         // This section sets the direction of all of the motors. Depending on the motor, this may change later in the program.
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -73,7 +77,7 @@ public class Robot {
     }
 
 
-    /*
+    /**
         ***************************************************************************************
         ***************************** DRIVETRAIN FUNCTIONS ************************************
         ***************************************************************************************
@@ -113,7 +117,7 @@ public class Robot {
 
     }
 
-    /*
+    /**
      ***************************************************************************************
      ***************************** AUTONOMOUS FUNCTIONS ************************************
      ***************************************************************************************
@@ -180,7 +184,7 @@ public class Robot {
         clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    /*
+    /**
      ***************************************************************************************
      ***************************** ARM AND CLAW FUNCTIONS ************************************
      ***************************************************************************************
@@ -195,6 +199,17 @@ public class Robot {
         }
     }
 
+    /*
+    public void holdElbow(String mode){
+        elbow.setDirection(DcMotor.Direction.REVERSE);
+        if (mode == "Auto"){
+            clawArm.setPower(0.05);
+        } else if (mode == "Tele"){
+            clawArm.setPower(0.1);
+        }
+    }
+    */
+
     public void openAndCloseClaw (double position){
         telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
         claw.getController().setServoPosition(claw.getPortNumber(), position);
@@ -205,6 +220,18 @@ public class Robot {
             telemetry.addData("Claw", "Open");
         }
     }
+
+    /*public void moveElbow (String direction, double power){
+        if (direction == "Up"){
+            elbow.setDirection(DcMotor.Direction.REVERSE);
+        } else if (direction == "Down"){
+            elbow.setDirection(DcMotor.Direction.FORWARD);
+        }
+
+        clawArm.setPower(power);
+
+    }
+     */
 
     public void moveArm(String direction, double power){
         if (direction == "Up"){
@@ -217,7 +244,7 @@ public class Robot {
 
 
 
-    /*
+    /**
      ***************************************************************************************
      ***************************** MISCELLANEOUS FUNCTIONS ************************************
      ***************************************************************************************
