@@ -48,7 +48,7 @@ public class BlueSuperAuto extends AutonomousPLUS {
         moveRobotForward(1250);
         prepareNextAction(300);
 
-        moveArmAuto("Down", 0.3, 300);
+        moveArmAuto("Down", 0.3, 400);
         robot.holdArm("Auto");
         //robot.encoderReset();
 
@@ -61,7 +61,7 @@ public class BlueSuperAuto extends AutonomousPLUS {
         moveRobotBackward(1350);
         prepareNextAction(400);
 
-        moveRobotLeft(750);
+        moveRobotLeft(775);
         prepareNextAction(400);
 
 

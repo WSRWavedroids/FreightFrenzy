@@ -21,10 +21,10 @@ public class BlueWarehousePark extends AutonomousPLUS {
 
         //Do this to pass inspection.
         waitForStart();
-        robot.moveArm("Up", 0.4);
-        prepareNextAction(500);
+        moveArmAuto("Up", 0.4, 400);
+        robot.holdArm("Auto");
 
-        moveRobotLeft(2000);
+        moveRobotLeft(2500);
         prepareNextAction(1000);
     }
 

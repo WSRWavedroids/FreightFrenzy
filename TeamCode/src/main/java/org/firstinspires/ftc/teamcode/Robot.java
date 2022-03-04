@@ -17,7 +17,7 @@ public class Robot {
     public DcMotor duckSpinner;
     public DcMotor clawArm;
     public CRServo claw;
-    //public DcMotor elbow;
+    public DcMotor elbow;
     public Telemetry telemetry;
 
     //init and declare war
@@ -45,7 +45,7 @@ public class Robot {
         duckSpinner = hardwareMap.get(DcMotor.class, "duckSpinner");
         clawArm = hardwareMap.get(DcMotor.class, "clawArm");
         claw = hardwareMap.get(CRServo.class, "claw");
-        //elbow = hardwareMap.get(CRServo.class, "elbow");
+        elbow = hardwareMap.get(DcMotor.class, "elbow");
 
 
 
@@ -56,7 +56,7 @@ public class Robot {
         this.duckSpinner = duckSpinner;
         this.clawArm = clawArm;
         this.claw = claw;
-        //this.elbow = elbow;
+        this.elbow = elbow;
 
         // This section sets the direction of all of the motors. Depending on the motor, this may change later in the program.
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -199,16 +199,16 @@ public class Robot {
         }
     }
 
-    /*
+
     public void holdElbow(String mode){
-        elbow.setDirection(DcMotor.Direction.REVERSE);
+        //elbow.setDirection(DcMotor.Direction.REVERSE);
         if (mode == "Auto"){
             clawArm.setPower(0.05);
         } else if (mode == "Tele"){
-            clawArm.setPower(0.1);
+            clawArm.setPower(0.05);
         }
     }
-    */
+
 
     public void openAndCloseClaw (double position){
         telemetry.addData("ServoPort", "Port: " + claw.getPortNumber());
@@ -221,17 +221,17 @@ public class Robot {
         }
     }
 
-    /*public void moveElbow (String direction, double power){
+    public void moveElbow (String direction, double power){
         if (direction == "Up"){
             elbow.setDirection(DcMotor.Direction.REVERSE);
         } else if (direction == "Down"){
             elbow.setDirection(DcMotor.Direction.FORWARD);
         }
 
-        clawArm.setPower(power);
+        elbow.setPower(power);
 
     }
-     */
+
 
     public void moveArm(String direction, double power){
         if (direction == "Up"){

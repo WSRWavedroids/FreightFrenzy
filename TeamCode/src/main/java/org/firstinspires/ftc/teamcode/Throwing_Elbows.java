@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -51,6 +52,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Throwing_Elbows", group="Iterative Opmode")
+@Disabled
 public class Throwing_Elbows extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
@@ -180,14 +182,14 @@ public class Throwing_Elbows extends OpMode {
         }
 
         if (this.gamepad2.right_stick_y > 0.5) {
-            //robot.moveElbow("Up", 0.65);
-            //telemetry.addData("Elbow", "Up");
+            robot.moveElbow("Up", 0.65);
+            telemetry.addData("Elbow", "Up");
 
         } else if (this.gamepad2.right_stick_y < - 0.5) {
-            //robot.moveElbow("Down", 0.2);
-            //telemetry.addData("Elbow", "Down");
+            robot.moveElbow("Down", 0.2);
+            telemetry.addData("Elbow", "Down");
         } else {
-            //robot.holdElbow("Tele");
+            robot.holdElbow("Tele");
         }
     }
 

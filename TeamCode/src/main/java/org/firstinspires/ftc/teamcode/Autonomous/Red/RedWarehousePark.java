@@ -19,10 +19,10 @@ public class RedWarehousePark extends AutonomousPLUS {
 
         //Do this to pass inspection.
         waitForStart();
-        robot.moveArm("Up", 0.4);
-        prepareNextAction(500);
+        moveArmAuto("Up", 0.4, 400);
+        robot.holdArm("Auto");
 
-        moveRobotRight(2000);
+        moveRobotRight(2500);
         prepareNextAction(1000);
     }
 
