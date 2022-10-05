@@ -106,13 +106,13 @@ public class Lean_Mean_Teleop_Machine extends OpMode {
         // This section checks what buttons on the Dpad are being pressed and changes the speed accordingly.
 
         if (gamepad1.dpad_up){
-            speed = 1;
-        } else if (gamepad1.dpad_down){
-            speed = 0.25;
-        } else if (gamepad1.dpad_left){
             speed = 0.5;
+        } else if (gamepad1.dpad_down){
+            speed = 0.12;
+        } else if (gamepad1.dpad_left){
+            speed = 0.25;
         } else if (gamepad1.dpad_right){
-            speed = 0.75;
+            speed = 0.37;
         }
 
         if (speed == 1) {
